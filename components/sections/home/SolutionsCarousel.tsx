@@ -13,7 +13,6 @@ import {
 } from "react";
 import { cn } from "@/lib/cn";
 import type { Service } from "@/lib/data/services";
-import { revealIndex } from "@/lib/motion";
 
 const CARD_GAP = 24;
 const AUTOPLAY_MS = 5000;
@@ -134,10 +133,10 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
     >
       <ul
         ref={trackRef}
-        data-reveal="children"
+        data-reveal="self"
         tabIndex={0}
         aria-label="Solutions proposées, faites défiler horizontalement"
-        className="carousel-track no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto [--reveal-x:6rem] [--reveal-y:0] focus-visible:outline-offset-[-2px]"
+        className="carousel-track no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto [--reveal-y:0] focus-visible:outline-offset-[-2px]"
       >
         {loop.map((service, position) => {
           const isCopy = position < count || position >= count * 2;
@@ -147,19 +146,18 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
               data-card
               aria-hidden={isCopy || undefined}
               className="shrink-0 snap-start"
-              style={revealIndex(position % count)}
             >
               <Link
                 href={`/services#${service.slug}`}
                 tabIndex={isCopy ? -1 : undefined}
-                className="group relative flex h-[535px] w-[410px] flex-col justify-end gap-2.5 overflow-hidden rounded px-4 py-8 text-bg"
+                className="relative flex h-[535px] w-[410px] flex-col justify-end gap-2.5 overflow-hidden rounded px-4 py-8 text-bg"
               >
                 <Image
                   src={service.illustration}
                   alt=""
                   fill
                   sizes="410px"
-                  className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="object-contain"
                 />
                 <span
                   aria-hidden="true"

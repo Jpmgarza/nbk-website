@@ -2,15 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useId, useState } from "react";
-import { useForm, type FieldError } from "react-hook-form";
+import { Controller, useForm, type FieldError } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
+import { Select } from "@/components/ui/Select";
 import { cn } from "@/lib/cn";
 import { contactSchema, LANGUAGE_OPTIONS, MISSION_OPTIONS, type ContactInput } from "@/lib/contact-schema";
 import { sendContactRequest } from "./actions";
 
 const labelClass = "font-display text-h4 lg:font-semibold";
 const fieldClass =
-  "w-full rounded border border-ink/30 bg-ink/8 px-4 text-body text-ink transition-colors focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent aria-[invalid=true]:border-accent";
+  "w-full rounded border border-ink/30 bg-ink/8 px-4 text-body text-ink transition-colors focus-visible:border-ink focus-visible:outline-none aria-[invalid=true]:border-accent";
 
 function FieldMessage({ id, error }: { id: string; error?: FieldError }) {
   if (!error?.message) return null;
@@ -21,18 +22,6 @@ function FieldMessage({ id, error }: { id: string; error?: FieldError }) {
   );
 }
 
-function SelectChevron() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 12 8"
-      className="pointer-events-none absolute right-4 top-1/2 h-2 w-3 -translate-y-1/2 text-ink"
-    >
-      <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 export function ContactForm() {
   const id = useId();
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
@@ -40,6 +29,7 @@ export function ContactForm() {
 
   const {
     register,
+    control,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
@@ -113,56 +103,52 @@ export function ContactForm() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor={`${id}-mission`} className={labelClass}>
+          <label id={`${id}-mission-label`} htmlFor={`${id}-mission`} className={labelClass}>
             Type de mission
           </label>
-          <div className="relative">
-            <select
-              id={`${id}-mission`}
-              defaultValue=""
-              className={cn(fieldClass, "h-12 appearance-none pr-10")}
-              aria-invalid={errors.mission ? true : undefined}
-              aria-describedby={describedBy("mission")}
-              {...register("mission")}
-            >
-              <option value="" disabled>
-                Choisir
-              </option>
-              {MISSION_OPTIONS.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <SelectChevron />
-          </div>
+          <Controller
+            control={control}
+            name="mission"
+            render={({ field }) => (
+              <Select
+                id={`${id}-mission`}
+                labelId={`${id}-mission-label`}
+                options={MISSION_OPTIONS}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                buttonRef={field.ref}
+                invalid={Boolean(errors.mission)}
+                describedBy={describedBy("mission")}
+                className={cn(fieldClass, "h-12")}
+              />
+            )}
+          />
           <FieldMessage id={`${id}-mission-error`} error={errors.mission} />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor={`${id}-languages`} className={labelClass}>
+          <label id={`${id}-languages-label`} htmlFor={`${id}-languages`} className={labelClass}>
             Langues concernées
           </label>
-          <div className="relative">
-            <select
-              id={`${id}-languages`}
-              defaultValue=""
-              className={cn(fieldClass, "h-12 appearance-none pr-10")}
-              aria-invalid={errors.languages ? true : undefined}
-              aria-describedby={describedBy("languages")}
-              {...register("languages")}
-            >
-              <option value="" disabled>
-                Choisir
-              </option>
-              {LANGUAGE_OPTIONS.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <SelectChevron />
-          </div>
+          <Controller
+            control={control}
+            name="languages"
+            render={({ field }) => (
+              <Select
+                id={`${id}-languages`}
+                labelId={`${id}-languages-label`}
+                options={LANGUAGE_OPTIONS}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                buttonRef={field.ref}
+                invalid={Boolean(errors.languages)}
+                describedBy={describedBy("languages")}
+                className={cn(fieldClass, "h-12")}
+              />
+            )}
+          />
           <FieldMessage id={`${id}-languages-error`} error={errors.languages} />
         </div>
 

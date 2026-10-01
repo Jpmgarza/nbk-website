@@ -24,7 +24,18 @@ const check = (name, ok, detail = "") => results.push(`${ok ? "OK  " : "FAIL"} $
   check("Échap ferme le menu", !(await menu.isVisible()));
   check("focus rendu au bouton", await page.getByRole("button", { name: "Ouvrir le menu" }).evaluate((el) => el === document.activeElement));
   await toggle.click();
-  await menu.getByRole("link", { name: "Services", exact: true }).click();
+  const servicesToggle = menu.getByRole("button", { name: "Services", exact: true });
+  // Clipped by overflow, the links still count as visible for Playwright: check the panel height and inert instead.
+  const servicesPanel = menu.locator("#mobile-services");
+  const panelState = () => servicesPanel.evaluate((el) => ({ height: el.getBoundingClientRect().height, inert: el.inert }));
+  const collapsed = await panelState();
+  check("sous-menu Services replié", (await servicesToggle.getAttribute("aria-expanded")) === "false" && collapsed.height === 0 && collapsed.inert, JSON.stringify(collapsed));
+  await servicesToggle.click();
+  await page.waitForTimeout(400);
+  const expanded = await panelState();
+  check("sous-menu Services déplié", (await servicesToggle.getAttribute("aria-expanded")) === "true" && expanded.height > 200 && !expanded.inert, JSON.stringify(expanded));
+  await page.screenshot({ path: path.join(outDir, "interaction-menu-services@390.png") });
+  await menu.getByRole("link", { name: "Tous les services" }).click();
   await page.waitForURL("**/services");
   check("lien du menu navigue et ferme", !(await menu.isVisible()));
   await page.close();
@@ -80,7 +91,7 @@ const check = (name, ok, detail = "") => results.push(`${ok ? "OK  " : "FAIL"} $
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(BASE + "/contact?mission=" + encodeURIComponent("Interprétation chuchotée"), { waitUntil: "networkidle" });
-  const mission = await page.getByLabel("Type de mission").inputValue();
+  const mission = (await page.getByRole("combobox", { name: "Type de mission" }).textContent())?.trim();
   check("mission pré-remplie depuis la page Services", mission === "Interprétation chuchotée", mission);
   await page.getByRole("button", { name: "Envoyer ma demande" }).first().click();
   const errors = await page.locator("form [id$='-error']").allTextContents();
@@ -90,7 +101,20 @@ const check = (name, ok, detail = "") => results.push(`${ok ? "OK  " : "FAIL"} $
 
   await page.getByLabel("Nom et prénom").fill("Test QA");
   await page.getByLabel("E-mail").fill("qa@example.com");
-  await page.getByLabel("Langues concernées").selectOption("Espagnol → français");
+  const languages = page.getByRole("combobox", { name: "Langues concernées" });
+  await languages.click();
+  check("liste des langues ouverte", (await languages.getAttribute("aria-expanded")) === "true");
+  await page.screenshot({ path: path.join(outDir, "interaction-select-open@1440.png") });
+  await page.getByRole("option", { name: "Espagnol → français" }).click();
+  check("langue choisie", (await languages.textContent())?.trim() === "Espagnol → français");
+  await languages.focus();
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
+  check("choix au clavier", (await languages.textContent())?.trim() === "Dans les deux sens");
+  await page.keyboard.press("Space");
+  await page.keyboard.press("Escape");
+  check("Échap ferme la liste", (await languages.getAttribute("aria-expanded")) === "false");
   await page.getByLabel("Commentaire").fill("Audition prévue le mois prochain.");
   await page.getByRole("button", { name: "Envoyer ma demande" }).first().click();
   await page.waitForTimeout(1500);

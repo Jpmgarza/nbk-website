@@ -45,21 +45,34 @@ export function ContactSection({ variant }: Props) {
     >
       <div className="container-page lg:grid lg:grid-cols-2 lg:gap-x-6">
         <div className="relative z-10 flex flex-col gap-8 lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:max-w-[845px]">
-          <SectionTitle id="contact-title" as={isPage ? "h1" : "h2"} reveal="scroll">
+          <SectionTitle id="contact-title" as={isPage ? "h1" : "h2"} reveal={isPage ? "load" : "scroll"}>
             {isPage ? "Parlons de votre situation" : "Sécurisez votre prochain rendez-vous ou audition dès aujourd’hui."}
           </SectionTitle>
           {isPage && (
-            <p className="text-body lg:max-w-[519px]">
+            <p className="motion-load-up text-body [--load-delay:650ms] lg:max-w-[519px]">
               Décrivez votre besoin, une réponse personnalisée vous sera apportée dans les meilleurs délais.
             </p>
           )}
         </div>
 
-        <div id="formulaire" data-reveal="self" className="mt-8 scroll-mt-28 [--reveal-delay:150ms] lg:col-start-1 lg:row-start-2 lg:mt-18 lg:max-w-[628px]">
+        <div
+          id="formulaire"
+          data-reveal={isPage ? undefined : "self"}
+          className={cn(
+            "mt-8 scroll-mt-28 lg:col-start-1 lg:row-start-2 lg:mt-18 lg:max-w-[628px]",
+            isPage ? "motion-load-up [--load-delay:800ms]" : "[--reveal-delay:150ms]",
+          )}
+        >
           <ContactForm />
         </div>
 
-        <div data-reveal="clip" className="relative hidden aspect-[628/518] overflow-hidden lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mb-[85px] lg:block lg:self-end">
+        <div
+          data-reveal={isPage ? undefined : "clip"}
+          className={cn(
+            "relative hidden aspect-[628/518] overflow-hidden lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mb-[85px] lg:block lg:self-end",
+            isPage && "motion-load-clip [--load-delay:400ms]",
+          )}
+        >
           <Image src={map} alt={MAP_ALT} fill sizes="(min-width: 1440px) 628px, 45vw" className="object-cover" />
         </div>
       </div>
@@ -80,12 +93,12 @@ export function ContactSection({ variant }: Props) {
 
         {isPage && (
           <div className="lg:hidden">
-            <div className="relative mt-8 aspect-[328/182] overflow-hidden">
+            <div data-reveal="clip" className="relative mt-8 aspect-[328/182] overflow-hidden">
               <Image src={map} alt={MAP_ALT} fill sizes="100vw" className="object-cover" />
             </div>
-            <ButtonLink href="#formulaire" className="mt-8">
-              Envoyer ma demande
-            </ButtonLink>
+            <div data-reveal="self" className="mt-8">
+              <ButtonLink href="#formulaire">Envoyer ma demande</ButtonLink>
+            </div>
           </div>
         )}
       </div>

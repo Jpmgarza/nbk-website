@@ -29,7 +29,8 @@ Next.js 16 App Router, React 19, TypeScript, Tailwind 3.4. Routes: `/`, `/servic
 - `components/sections/<route>/`: one component per Figma section. `shared/` holds `PageHero`
   (home and services heroes), `FaqSection` and `ContactSection` (`variant: "home" | "page"`).
 - `components/ui/`: `Button`/`ButtonLink`, `SectionTitle` (heading + red rule), `CalloutCard`, `FaqList`.
-- `components/layout/`: `Header` (client: services dropdown, burger menu; fixed with a spacer, it shrinks to a compact logo + burger bar on every size once scrolled past 80px) and `Footer`.
+- `components/layout/`: `Header` (client: services dropdown, burger menu whose Services entry is a collapsed disclosure starting with "Tous les services"; fixed with a spacer, it shrinks to a compact logo + burger bar on every size once scrolled past 80px) and `Footer`.
+- `components/ui/Select.tsx`: branded select-only combobox used by the contact form (native option lists cannot be styled).
 - `lib/data/`: all copy as typed data. `lib/constants.ts`: contact details, domain, navigation.
 - `lib/contact-schema.ts`: Zod schema shared by `ContactForm` and the server action
   (`components/forms/actions.ts`, which may only export async functions).
@@ -75,7 +76,10 @@ No animation library. `styles/motion.css` (unlayered, so it beats utilities) doc
   in 350ms later) when it reaches the tile, then waits at that tile's top edge until the tile's opacity
   transition has ended; steps stay revealed, scrolling up only shortens the line.
   The steps carry `data-reveal-manual` so `MotionObserver` leaves them alone.
-- Rolled out on the home page (plus the shared hero, FAQ and contact sections). `npm run qa` runs
+- `ContactSection variant="page"` plays its top block on load instead (title `reveal="load"`,
+  `.motion-load-up`, `.motion-load-clip`), because it is on screen at load and scroll reveals skip that.
+- Rolled out on the home page, `/services` and `/contact` (plus the shared hero, FAQ and contact sections). Service
+  illustrations (carousel and service pages) only fade, by client choice. `npm run qa` runs
   with reduced motion, so screenshots show the settled page.
 
 ## Assets

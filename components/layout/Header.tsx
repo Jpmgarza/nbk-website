@@ -22,6 +22,7 @@ export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const servicesRef = useRef<HTMLLIElement>(null);
@@ -32,6 +33,25 @@ export function Header() {
     setMenuOpen(false);
     setServicesOpen(false);
   }
+
+  // The burger menu's services list starts collapsed every time the menu opens.
+  const [lastMenuOpen, setLastMenuOpen] = useState(menuOpen);
+  if (menuOpen !== lastMenuOpen) {
+    setLastMenuOpen(menuOpen);
+    if (!menuOpen) setMobileServicesOpen(false);
+  }
+
+  // Next scrolls the new page's <main> to the top of the viewport, which leaves the spacer above it
+  // (and the full header) scrolled out of view. Start every new page at the very top instead,
+  // unless the link targets an anchor.
+  const firstPathname = useRef(pathname);
+  useEffect(() => {
+    if (pathname === firstPathname.current) return;
+    firstPathname.current = pathname;
+    if (window.location.hash) return;
+    const frame = requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
 
   useEffect(() => {
     let frame = 0;
@@ -102,6 +122,14 @@ export function Header() {
             className="motion-header-item shrink-0"
             style={headerItem(0)}
             aria-label="NBK Interprétation & Traduction juridique, accueil"
+            onClick={(event) => {
+              // Next does not scroll when the link points at the page already shown (with or without a #hash).
+              if (pathname !== "/") return;
+              event.preventDefault();
+              setMenuOpen(false);
+              if (window.location.hash) window.history.pushState(null, "", "/");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           >
             <Image
               src={logo}
@@ -193,19 +221,20 @@ export function Header() {
             <span
               className={cn(
                 "absolute left-1 top-[10px] h-[3px] w-12 rounded-full bg-ink transition-transform duration-300",
-                menuOpen && "translate-y-[18px] rotate-45",
+                menuOpen && "translate-y-[18px] rotate-[60deg]",
               )}
             />
+            {/* Open, the three lines meet as an asterisk: black arms at ±60°, the red one horizontal. */}
             <span
               className={cn(
-                "absolute left-1 top-[28px] h-[3px] w-12 rounded-full bg-ink transition-opacity duration-200",
-                menuOpen && "opacity-0",
+                "absolute left-1 top-[28px] h-[3px] w-12 rounded-full bg-ink transition-transform duration-300",
+                menuOpen && "-rotate-[60deg]",
               )}
             />
             <span
               className={cn(
                 "absolute left-1 top-[46px] h-[3px] w-12 rounded-full bg-accent transition-transform duration-300",
-                menuOpen && "-translate-y-[18px] -rotate-45",
+                menuOpen && "-translate-y-[18px]",
               )}
             />
           </button>
@@ -224,28 +253,73 @@ export function Header() {
           <ul className="flex flex-col divide-y divide-ink/10">
             {MAIN_NAV.map((item) => (
               <li key={item.href} className="py-2">
-                <Link
-                  href={item.href}
-                  className="flex min-h-12 items-center font-display text-menu transition-colors hover:text-accent aria-[current=page]:text-accent"
-                  aria-current={isCurrent(item.href)}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-                {item.href === "/services" && (
-                  <ul className="mb-2 flex flex-col border-l-2 border-accent/30 pl-4">
-                    {SERVICES.map((service) => (
-                      <li key={service.slug}>
-                        <Link
-                          href={`/services#${service.slug}`}
-                          className="flex min-h-11 items-center py-1 text-body text-ink/72 hover:text-accent"
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          {service.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                {item.href === "/services" ? (
+                  <>
+                    <button
+                      type="button"
+                      className={cn(
+                        "flex min-h-12 w-full items-center justify-between font-display text-menu transition-colors hover:text-accent",
+                        pathname === "/services" && "text-accent",
+                      )}
+                      aria-expanded={mobileServicesOpen}
+                      aria-controls="mobile-services"
+                      onClick={() => setMobileServicesOpen((open) => !open)}
+                    >
+                      {item.label}
+                      <Image
+                        src="/icons/caret.svg"
+                        alt=""
+                        width={14}
+                        height={12}
+                        unoptimized
+                        className={cn("mr-1 transition-transform duration-200", !mobileServicesOpen && "rotate-180")}
+                      />
+                    </button>
+                    {/* Collapsed by grid rows so the height can animate; inert keeps the hidden links out of the tab order. */}
+                    <div
+                      id="mobile-services"
+                      inert={!mobileServicesOpen}
+                      className={cn(
+                        "grid transition-[grid-template-rows] duration-300 ease-out",
+                        mobileServicesOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                      )}
+                    >
+                      <div className="min-h-0 overflow-hidden">
+                        <ul className="mb-2 mt-1 flex flex-col border-l-2 border-accent/30 pl-4">
+                          <li>
+                            <Link
+                              href="/services"
+                              className="flex min-h-11 items-center py-1 text-body font-semibold hover:text-accent aria-[current=page]:text-accent"
+                              aria-current={isCurrent("/services")}
+                              onClick={() => setMenuOpen(false)}
+                            >
+                              Tous les services
+                            </Link>
+                          </li>
+                          {SERVICES.map((service) => (
+                            <li key={service.slug}>
+                              <Link
+                                href={`/services#${service.slug}`}
+                                className="flex min-h-11 items-center py-1 text-body text-ink/72 hover:text-accent"
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {service.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="flex min-h-12 items-center font-display text-menu transition-colors hover:text-accent aria-[current=page]:text-accent"
+                    aria-current={isCurrent(item.href)}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
                 )}
               </li>
             ))}
