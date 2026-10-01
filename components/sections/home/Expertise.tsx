@@ -20,7 +20,7 @@ export function Expertise() {
             <li key={proof.title} className="flex" style={revealIndex(index)}>
               <CalloutCard
                 title={proof.title}
-                className="w-full transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:min-h-[204px] [@media(hover:hover)]:hover:shadow-card-hover motion-safe:[@media(hover:hover)]:hover:-translate-y-1.5"
+                className="w-full transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:min-h-[204px] hover:shadow-card-hover motion-safe:hover:-translate-y-1.5"
                 textClassName="lg:font-semibold"
               >
                 {proof.text}
