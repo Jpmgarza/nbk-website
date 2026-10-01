@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: 254 253 253;
+    --color-ink: 29 29 27;
+    --color-accent: 176 24 41;
+    --color-accent-strong: 142 19 33;
+    --gutter: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --gutter: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --gutter: 3rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    :root {
+      --gutter: 5rem;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-sans text-body text-ink antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 3px;
+  }
+
+  .on-accent :focus-visible {
+    outline-color: rgb(var(--color-bg));
+  }
+
+  ::selection {
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-bg));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-page;
+    padding-inline: var(--gutter);
+  }
+
+  .px-gutter {
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    @apply pb-12 pt-24 lg:pb-18 lg:pt-46;
+  }
+
+  .section-tight {
+    @apply pb-12 pt-24 lg:pb-18 lg:pt-26;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* The solutions carousel starts on the page grid and bleeds to the right edge.
+     The end padding lets the last card scroll to the start position. */
+  .carousel-track {
+    --track-start: max(var(--gutter), calc((100% - 1440px) / 2 + var(--gutter)));
+    padding-left: var(--track-start);
+    padding-right: calc(100% - 410px - var(--track-start));
+    scroll-padding-left: var(--track-start);
+  }
+
+  .skip-link {
+    @apply absolute left-4 top-4 z-[60] -translate-y-24 rounded bg-ink px-4 py-3 text-bg;
+  }
+
+  .skip-link:focus-visible {
+    @apply translate-y-0;
+  }
+}

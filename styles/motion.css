@@ -1,0 +1,294 @@
+/*
+ * Motion. Kept outside the Tailwind layers so it wins over utilities; never put data-reveal on an
+ * element that has its own transform or transition utilities.
+ *
+ * 1. Scroll reveals: MotionObserver sets data-reveal-state="pending" then "in". Variants:
+ *    self      the element fades and moves in (direction: --reveal-x / --reveal-y / --reveal-scale)
+ *    children  same, applied to each direct child, staggered by --reveal-i
+ *    rows      problems list: number slides in, text rises, divider draws
+ *    step      process step: tile pops, text slides in from its side (revealed by ProcessLine)
+ *    title     SectionTitle: words rise, red rule draws
+ *    clip      image wipes open upwards and settles from a slight zoom
+ * 2. Load: hero entrance with data-reveal-load / .motion-load-up, pure CSS.
+ * 3. Scroll-linked: timeline connector and parallax, only where scroll-driven animations exist.
+ * Reduced motion: the observer does nothing and sections 2 and 3 are gated by media queries.
+ */
+
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* room for descenders inside the mask */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.reveal-word-inner {
+  display: inline-block;
+}
+
+.reveal-rule {
+  transform-origin: left;
+}
+
+/* 1. Scroll reveals ------------------------------------------------------------------------ */
+
+[data-reveal="self"][data-reveal-state],
+[data-reveal="children"][data-reveal-state] > * {
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 1.1s var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 90ms + var(--reveal-delay, 0ms));
+}
+
+[data-reveal="self"][data-reveal-state="pending"],
+[data-reveal="children"][data-reveal-state="pending"] > * {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 2.5rem), 0) scale(var(--reveal-scale, 1));
+}
+
+/* rows */
+[data-reveal="rows"] > li::after {
+  transform-origin: left;
+}
+
+[data-reveal="rows"][data-reveal-state] > li > *,
+[data-reveal="rows"][data-reveal-state] > li::after {
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 1.2s var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 110ms);
+}
+
+[data-reveal="rows"][data-reveal-state] > li > :nth-child(2) {
+  transition-delay: calc(var(--reveal-i, 0) * 110ms + 80ms);
+}
+
+[data-reveal="rows"][data-reveal-state="pending"] > li > :first-child {
+  opacity: 0;
+  transform: translateX(-2rem);
+}
+
+[data-reveal="rows"][data-reveal-state="pending"] > li > :nth-child(2) {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+[data-reveal="rows"][data-reveal-state="pending"] > li::after {
+  transform: scaleX(0);
+}
+
+/* step */
+[data-reveal="step"][data-reveal-state] > * {
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 1.1s var(--ease-out);
+}
+
+/* the text follows once the tile has mostly popped */
+[data-reveal="step"][data-reveal-state] > :last-child {
+  transition-delay: 350ms;
+}
+
+[data-reveal="step"][data-reveal-state="pending"] > :first-child {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+[data-reveal="step"][data-reveal-state="pending"] > :last-child {
+  opacity: 0;
+  transform: translateY(1.5rem);
+}
+
+@media (min-width: 1024px) {
+  /* odd steps sit in the right column, even steps in the left one */
+  [data-reveal="step"][data-reveal-state="pending"]:nth-child(odd) > :last-child {
+    transform: translateX(3rem);
+  }
+
+  [data-reveal="step"][data-reveal-state="pending"]:nth-child(even) > :last-child {
+    transform: translateX(-3rem);
+  }
+}
+
+/* title */
+[data-reveal="title"][data-reveal-state] .reveal-word-inner {
+  transition: transform 1s var(--ease-out);
+  transition-delay: calc(var(--w, 0) * 70ms);
+}
+
+[data-reveal="title"][data-reveal-state] .reveal-rule {
+  transition: transform 1s var(--ease-out) 300ms;
+}
+
+[data-reveal="title"][data-reveal-state="pending"] .reveal-word-inner {
+  transform: translateY(110%);
+}
+
+[data-reveal="title"][data-reveal-state="pending"] .reveal-rule {
+  transform: scaleX(0);
+}
+
+/* clip */
+[data-reveal="clip"][data-reveal-state] {
+  transition: clip-path 1.3s var(--ease-out);
+}
+
+[data-reveal="clip"][data-reveal-state] img {
+  transition: scale 1.8s var(--ease-out);
+}
+
+[data-reveal="clip"][data-reveal-state="pending"] {
+  clip-path: inset(100% 0 0 0);
+}
+
+[data-reveal="clip"][data-reveal-state="pending"] img {
+  scale: 1.15;
+}
+
+/* 2. Load ---------------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-hero-media {
+    animation: hero-media 1.4s var(--ease-out) both;
+  }
+
+  .motion-hero-media img {
+    animation: hero-zoom 1.8s var(--ease-out) both;
+  }
+
+  [data-reveal-load="title"] .reveal-word-inner {
+    animation: word-rise 1.1s var(--ease-out) both;
+    animation-delay: calc(250ms + var(--w, 0) * 80ms);
+  }
+
+  [data-reveal-load="title"] .reveal-rule {
+    animation: rule-draw 1s var(--ease-out) 700ms both;
+  }
+
+  .motion-load-up {
+    animation: fade-up 1s var(--ease-out) both;
+    animation-delay: var(--load-delay, 0ms);
+  }
+}
+
+/* Header: logo, links and burger drop in from above the page on arrival, one after another.
+   The animation restarts whenever an item goes from display: none to visible, so the desktop
+   links drop back in when the compact bar expands at the top of the page. */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-header-item {
+    animation: header-drop 0.9s var(--ease-out) both;
+    animation-delay: calc(100ms + var(--header-i, 0) * 70ms);
+  }
+}
+
+@keyframes header-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-150%);
+  }
+}
+
+/* Solutions carousel: the active segment fills over the autoplay interval; its animationend is
+   the autoplay timer (SolutionsCarousel only adds the class when motion is allowed). */
+.carousel-progress {
+  animation: carousel-progress var(--carousel-interval, 5s) linear both;
+}
+
+@keyframes carousel-progress {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Hero photo hover: a slow push-in. It uses transform, which composes with the load zoom
+   (scale) and the parallax (translate) instead of being overridden by them. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .motion-hero-media img {
+    transition:
+      transform 1.4s var(--ease-out),
+      filter 1.4s var(--ease-out);
+  }
+
+  .motion-hero-media:hover img {
+    transform: scale(1.04);
+    filter: saturate(1.08) brightness(1.02);
+  }
+}
+
+@keyframes hero-media {
+  from {
+    clip-path: inset(7% 7% 7% 7% round 0.25rem);
+  }
+  to {
+    clip-path: inset(0 round 0.25rem);
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    scale: 1.3;
+  }
+  to {
+    scale: var(--hero-rest-scale, 1);
+  }
+}
+
+@keyframes word-rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
+/* 3. Scroll-linked ------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The hero photo drifts down as it leaves, so it rests slightly zoomed to keep the edges covered. */
+    .motion-hero-media img {
+      --hero-rest-scale: 1.1;
+      animation:
+        hero-zoom 1.8s var(--ease-out) both,
+        hero-parallax linear both;
+      animation-timeline: auto, view();
+      animation-range: normal, exit 0% exit 100%;
+    }
+
+    .motion-parallax {
+      animation: parallax linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes hero-parallax {
+  to {
+    translate: 0 5%;
+  }
+}
+
+@keyframes parallax {
+  from {
+    translate: 0 8%;
+  }
+  to {
+    translate: 0 -8%;
+  }
+}

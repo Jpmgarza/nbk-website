@@ -1,0 +1,36 @@
+import type { FaqItem } from "@/lib/data/faq";
+import { cn } from "@/lib/cn";
+import { revealIndex } from "@/lib/motion";
+
+type Props = {
+  items: FaqItem[];
+  className?: string;
+  /** Questions fade in one after another when the list scrolls into view. */
+  reveal?: boolean;
+};
+
+export function FaqList({ items, className, reveal }: Props) {
+  return (
+    <div data-reveal={reveal ? "children" : undefined} className={cn("flex flex-col [--reveal-y:1.5rem]", className)}>
+      {items.map((item, index) => (
+        <details
+          key={item.question}
+          style={revealIndex(index)}
+          className="group border-b border-ink/30 py-4 first:pt-0 last:border-b-0 last:pb-0 lg:border-b-2"
+        >
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-4 font-display text-h4 transition-colors hover:text-accent lg:font-semibold [&::-webkit-details-marker]:hidden">
+            <span>{item.question}</span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              className="mt-[7px] size-5 shrink-0 text-accent/50 transition-[transform,color] duration-200 group-open:rotate-45 group-hover:text-accent group-open:text-accent"
+            >
+              <path d="M10 2v16M2 10h16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+          </summary>
+          <p className="max-w-[60ch] pt-3 text-body-loose text-ink/85">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  );
+}
