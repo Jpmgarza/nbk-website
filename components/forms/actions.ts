@@ -8,6 +8,33 @@ export type ContactResult = { ok: true } | { ok: false; message: string };
 
 const FALLBACK_MESSAGE = `L’envoi n’a pas abouti. Vous pouvez réessayer, écrire à ${SITE.email} ou appeler le ${SITE.phone.display}.`;
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderEmail(rows: [string, string][], comment: string) {
+  const details = rows
+    .map(
+      ([label, value]) =>
+        `<tr><td style="padding:10px 16px 10px 0;color:#6b7280;font-size:14px;white-space:nowrap;vertical-align:top">${escapeHtml(label)}</td><td style="padding:10px 0;font-size:16px;color:#111827">${escapeHtml(value)}</td></tr>`,
+    )
+    .join("");
+
+  return `<!doctype html><html lang="fr"><body style="margin:0;padding:24px;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;line-height:1.5">
+<div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:8px;padding:32px">
+<h1 style="margin:0 0 4px;font-size:22px;color:#111827">Nouvelle demande de devis</h1>
+<p style="margin:0 0 24px;font-size:14px;color:#6b7280">Reçue depuis le formulaire de contact du site</p>
+<table style="border-collapse:collapse;width:100%;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb">${details}</table>
+<h2 style="margin:24px 0 8px;font-size:16px;color:#111827">Commentaire</h2>
+<p style="margin:0;font-size:16px;color:#111827;white-space:pre-wrap">${escapeHtml(comment)}</p>
+<p style="margin:24px 0 0;font-size:13px;color:#6b7280">Répondez directement à ce message pour écrire à la personne.</p>
+</div></body></html>`;
+}
+
 export async function sendContactRequest(input: unknown): Promise<ContactResult> {
   const parsed = contactSchema.safeParse(input);
   if (!parsed.success) {
@@ -20,6 +47,8 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
   }
 
   const text = [
+    "Nouvelle demande de devis",
+    "",
     `Nom et prénom : ${data.name}`,
     `E-mail : ${data.email}`,
     `Type de mission : ${data.mission}`,
@@ -28,6 +57,13 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
     "Commentaire :",
     data.comment,
   ].join("\n");
+
+  const html = renderEmail([
+    ["Nom et prénom", data.name],
+    ["E-mail", data.email],
+    ["Type de mission", data.mission],
+    ["Langues concernées", data.languages],
+  ], data.comment);
 
   const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM, SMTP_TO } = process.env;
 
@@ -52,8 +88,9 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
       from: SMTP_FROM ?? SMTP_USER,
       to: SMTP_TO ?? SITE.email,
       replyTo: { name: data.name, address: data.email },
-      subject: `Demande de devis : ${data.mission}`,
+      subject: `Nouvelle demande de devis : ${data.mission}`,
       text,
+      html,
     });
 
     return { ok: true };
