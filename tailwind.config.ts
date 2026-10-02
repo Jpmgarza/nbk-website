@@ -44,7 +44,7 @@ const config: Config = {
       },
       boxShadow: {
         card: "0 4px 6px rgb(29 29 27 / 0.08)",
-        "card-hover": "0 20px 36px -10px rgb(var(--color-accent) / 0.22), 0 4px 10px rgb(var(--color-accent) / 0.08)",
+        "card-hover": "0 20px 36px -10px rgb(var(--color-ink) / 0.14), 0 4px 10px rgb(var(--color-ink) / 0.06)",
         menu: "0 8px 24px rgb(29 29 27 / 0.12)",
       },
       maxWidth: {
