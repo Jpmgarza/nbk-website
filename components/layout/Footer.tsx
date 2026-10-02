@@ -50,7 +50,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" className="-mt-1 inline-block">
+                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" className="inline-block lg:-mt-1">
                   <Image src="/icons/linkedin.svg" alt="LinkedIn" width={64} height={64} unoptimized />
                 </a>
               </li>
@@ -108,7 +108,7 @@ export function Footer() {
         </nav>
 
         <div className="hidden lg:flex lg:flex-col lg:gap-2">
-          <a href={SITE.studio.url} target="_blank" rel="noopener" className="self-start font-display text-h4 hover:underline">
+          <a href={SITE.studio.url} target="_blank" rel="noopener" className="-my-3 self-start py-3 font-display text-h4 hover:underline">
             Site Web conçu par {SITE.studio.name}
           </a>
           <p className="text-caption">© {year} {SITE.name}. Tous droits réservés.</p>
@@ -131,7 +131,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <a href={SITE.studio.url} target="_blank" rel="noopener" className="self-start hover:underline">
+            <a href={SITE.studio.url} target="_blank" rel="noopener" className="-mb-3 self-start py-3 hover:underline">
               Site conçu par {SITE.studio.name}
             </a>
           </div>

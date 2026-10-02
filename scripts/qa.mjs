@@ -8,7 +8,11 @@ import { chromium } from "playwright";
 const BASE = process.env.QA_BASE_URL ?? "http://localhost:3100";
 const [onlyPath, onlyWidth] = process.argv.slice(2);
 const PAGES = onlyPath ? [onlyPath] : ["/", "/services", "/contact", "/mentions-legales", "/protection-des-donnees"];
-const WIDTHS = onlyWidth ? [Number(onlyWidth)] : [1440, 1024, 768, 390, 360];
+const VIEWPORTS = onlyWidth
+  ? [{ width: Number(onlyWidth), height: Number(onlyWidth) >= 1024 ? 900 : 844 }]
+  : [1920, 1440, 1024, 768, 390, 375, 360, 320]
+      .map((width) => ({ width, height: width >= 1024 ? 900 : 844 }))
+      .concat([{ width: 667, height: 375 }]);
 const outDir = path.join(process.cwd(), "qa/screenshots");
 await mkdir(outDir, { recursive: true });
 
@@ -17,10 +21,10 @@ const problems = [];
 const links = new Set();
 
 for (const pagePath of PAGES) {
-  for (const width of WIDTHS) {
-    const context = await browser.newContext({ viewport: { width, height: width >= 1024 ? 900 : 844 }, reducedMotion: "reduce" });
+  for (const { width, height } of VIEWPORTS) {
+    const context = await browser.newContext({ viewport: { width, height }, reducedMotion: "reduce" });
     const page = await context.newPage();
-    const tag = `${pagePath === "/" ? "home" : pagePath.slice(1)}@${width}`;
+    const tag = `${pagePath === "/" ? "home" : pagePath.slice(1)}@${width}${height === 375 ? "x375" : ""}`;
     page.on("console", (msg) => msg.type() === "error" && problems.push(`${tag} console: ${msg.text()}`));
     page.on("pageerror", (err) => problems.push(`${tag} pageerror: ${err.message}`));
     page.on("response", (res) => res.status() >= 400 && problems.push(`${tag} HTTP ${res.status()} ${res.url()}`));

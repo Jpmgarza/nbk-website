@@ -82,7 +82,7 @@ export function ContactSection({ variant }: Props) {
         <div className={cn("mt-36 lg:mt-18", isPage ? "lg:sr-only" : "sr-only")}>
           <SectionTitle>Coordonnées</SectionTitle>
         </div>
-        <dl data-reveal="children" className="mt-8 grid gap-4 lg:mt-18 lg:grid-cols-4 lg:items-end lg:gap-6">
+        <dl data-reveal="children" className="mt-8 grid gap-4 lg:mt-18 lg:grid-cols-4 lg:items-start lg:gap-6">
           {details.map((item, index) => (
             <div key={item.label} style={revealIndex(index)} className="flex flex-col gap-2 py-2 lg:gap-1 lg:py-0">
               <dt className="font-display text-h4 font-medium lg:font-normal">{item.label}</dt>

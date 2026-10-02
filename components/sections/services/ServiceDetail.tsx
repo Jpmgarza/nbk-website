@@ -11,7 +11,7 @@ export function ServiceDetail({ service }: { service: Service }) {
 
   return (
     <section id={service.slug} aria-labelledby={titleId} className="section-tight scroll-mt-4">
-      <div className="container-page lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,519px)] lg:items-center lg:gap-x-[clamp(3rem,6.7vw,6rem)]">
+      <div className="container-page lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,clamp(480px,calc(51.3vw_-_45px),519px))] lg:items-center lg:gap-x-[clamp(3rem,6.7vw,6rem)]">
         <div>
           <SectionTitle id={titleId} reveal="scroll">{service.title}</SectionTitle>
 

@@ -13,7 +13,7 @@ export function Problems() {
             <SectionTitle id="problemes-title" reveal="scroll" className="lg:w-[519px] lg:shrink-0">
               Vos problèmes
             </SectionTitle>
-            <p data-reveal="self" className="text-body lg:hidden">
+            <p data-reveal="self" className="max-w-[56ch] text-body lg:hidden">
               {PROBLEMS.summary}
             </p>
             <p data-reveal="self" className="hidden text-body [--reveal-delay:150ms] lg:block lg:max-w-[440px]">
@@ -39,7 +39,7 @@ export function Problems() {
             ))}
           </ol>
 
-          <div data-reveal="self" className="mt-8 lg:hidden">
+          <div data-reveal="self" className="mt-8 max-w-[56ch] lg:hidden">
             <CalloutCard as="p" title={PROBLEMS.riskTitle}>
               {PROBLEMS.riskText.charAt(0).toUpperCase() + PROBLEMS.riskText.slice(1)}
             </CalloutCard>

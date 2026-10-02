@@ -30,7 +30,7 @@ export function FaqList({ items, className, reveal }: Props) {
               className="mt-[13px] shrink-0 rotate-180 transition-transform duration-200 group-open:rotate-0"
             />
           </summary>
-          <p className="max-w-[60ch] pt-3 text-body-loose text-ink/85">{item.answer}</p>
+          <p className="max-w-[52ch] pt-3 text-body-loose text-ink/85">{item.answer}</p>
         </details>
       ))}
     </div>

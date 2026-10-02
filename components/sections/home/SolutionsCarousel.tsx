@@ -179,7 +179,7 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
             aria-label={`Afficher : ${service.title}`}
             aria-current={index === active ? "true" : undefined}
             onClick={() => goTo(index)}
-            className="group flex h-6 w-12 items-center"
+            className="group -my-2.5 flex h-11 w-12 items-center"
           >
             <span className="relative h-1 w-full overflow-hidden rounded-full bg-ink/15 transition-colors group-hover:bg-ink/30">
               {index === active && (
