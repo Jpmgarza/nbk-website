@@ -8,8 +8,9 @@ type Props = {
   title: ReactNode;
   body: ReactNode;
   cta: { label: string; href: string };
-  image: StaticImageData;
-  imageAlt: string;
+  /** Omit to render a grey placeholder block instead of a photo. */
+  image?: StaticImageData;
+  imageAlt?: string;
   imageClassName?: string;
   align?: "center" | "start";
   className?: string;
@@ -30,16 +31,20 @@ export function PageHero({ title, body, cta, image, imageAlt, imageClassName, al
           align === "center" ? "lg:grid-rows-[1fr_auto_auto_auto_1fr]" : "lg:grid-rows-[0_auto_auto_auto_1fr]",
         )}
       >
-        <div className="motion-hero-media relative h-[510px] overflow-hidden rounded [grid-area:media] md:h-[720px] lg:h-auto lg:aspect-[413/586] lg:self-center">
-          <Image
-            src={image}
-            alt={imageAlt}
-            fill
-            priority
-            placeholder="blur"
-            sizes="(min-width: 1024px) 413px, 100vw"
-            className={cn("object-cover", imageClassName)}
-          />
+        <div className="motion-hero-media relative h-[510px] overflow-hidden rounded [grid-area:media] md:h-[720px] [@media(max-height:500px)_and_(max-width:1023px)]:h-[calc(100svh-100px)] lg:h-auto lg:aspect-[413/586] lg:self-center">
+          {image ? (
+            <Image
+              src={image}
+              alt={imageAlt ?? ""}
+              fill
+              priority
+              placeholder="blur"
+              sizes="(min-width: 1024px) 413px, 100vw"
+              className={cn("object-cover", imageClassName)}
+            />
+          ) : (
+            <div aria-hidden="true" className="absolute inset-0 bg-[#9ca3af]" />
+          )}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[linear-gradient(180deg,rgb(29_29_27/0)_0%,rgb(29_29_27/0.08)_35%,rgb(29_29_27/0.92)_100%)] lg:hidden"

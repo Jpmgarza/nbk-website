@@ -1,4 +1,3 @@
-import portrait from "@/assets/images/noelia-portrait.webp";
 import { Expertise } from "@/components/sections/home/Expertise";
 import { Problems } from "@/components/sections/home/Problems";
 import { Process } from "@/components/sections/home/Process";
@@ -32,9 +31,6 @@ export default function HomePage() {
           </p>
         }
         cta={{ label: "Recevoir mon devis", href: "/contact" }}
-        image={portrait}
-        imageAlt="Portrait de Noelia Krähenbühl, interprète et traductrice"
-        imageClassName="object-[58%_center]"
       />
       <Expertise />
       <Problems />
