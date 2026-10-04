@@ -1,18 +1,15 @@
 import { LegalPage } from "@/components/sections/legal/LegalPage";
 import { SITE } from "@/lib/constants";
+import { getContent } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
-export const metadata = pageMetadata({
-  title: "Protection des données",
-  description:
-    "Comment NBK Interprétation & Traduction Juridique traite les données transmises via le formulaire de contact, conformément à la loi fédérale sur la protection des données.",
-  path: "/protection-des-donnees",
-  noindex: true,
-});
+export const metadata = pageMetadata({ locale: "fr", page: "privacy", noindex: true });
+
+const { legalPage } = getContent("fr");
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Protection des données" updated="30 septembre 2026">
+    <LegalPage title="Protection des données" updated={{ label: legalPage.updated, date: legalPage.date }}>
       <section>
         <p>
           Cette page explique quelles données personnelles sont traitées sur ce site, dans quel but et quels sont vos
@@ -32,7 +29,7 @@ export default function PrivacyPage() {
         <p>Lorsque vous utilisez le formulaire de contact, les données suivantes sont transmises :</p>
         <ul>
           <li>votre nom et prénom et votre adresse e-mail ;</li>
-          <li>le type de mission et les langues concernées ;</li>
+          <li>le type de mission, les langues concernées et la langue de la page utilisée ;</li>
           <li>votre commentaire décrivant le besoin.</li>
         </ul>
         <p>

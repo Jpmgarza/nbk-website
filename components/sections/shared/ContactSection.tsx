@@ -5,20 +5,22 @@ import { ButtonLink } from "@/components/ui/Button";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { cn } from "@/lib/cn";
 import { SITE } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
 import { revealIndex } from "@/lib/motion";
 
 type Props = {
   variant: "home" | "page";
+  locale: Locale;
 };
 
-const MAP_ALT = "Carte de la Suisse, canton de Vaud et Suisse romande mis en évidence";
-
-export function ContactSection({ variant }: Props) {
+export function ContactSection({ variant, locale }: Props) {
   const isPage = variant === "page";
+  const { contact, form } = getContent(locale);
 
   const details = [
     {
-      label: "E-mail",
+      label: contact.labels.email,
       value: (
         <a href={`mailto:${SITE.email}`} className="text-accent hover:underline lg:text-ink">
           {SITE.email}
@@ -26,15 +28,15 @@ export function ContactSection({ variant }: Props) {
       ),
     },
     {
-      label: "Téléphone",
+      label: contact.labels.phone,
       value: (
         <a href={SITE.phone.href} className="text-accent hover:underline lg:text-ink">
           {SITE.phone.display}
         </a>
       ),
     },
-    { label: "Disponibilité", value: SITE.availability },
-    { label: "Zone de service", value: SITE.serviceArea },
+    { label: contact.labels.availability, value: contact.availability },
+    { label: contact.labels.area, value: contact.area },
   ];
 
   return (
@@ -46,11 +48,11 @@ export function ContactSection({ variant }: Props) {
       <div className="container-page lg:grid lg:grid-cols-2 lg:gap-x-6">
         <div className="relative z-10 flex flex-col gap-8 lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:max-w-[845px]">
           <SectionTitle id="contact-title" as={isPage ? "h1" : "h2"} reveal={isPage ? "load" : "scroll"}>
-            {isPage ? "Parlons de votre situation" : "Sécurisez votre prochain rendez-vous ou audition dès aujourd’hui."}
+            {isPage ? contact.pageTitle : contact.homeTitle}
           </SectionTitle>
           {isPage && (
             <p className="motion-load-up text-body [--load-delay:650ms] lg:max-w-[519px]">
-              Décrivez votre besoin, une réponse personnalisée vous sera apportée dans les meilleurs délais.
+              {contact.pageIntro}
             </p>
           )}
         </div>
@@ -63,7 +65,7 @@ export function ContactSection({ variant }: Props) {
             isPage ? "motion-load-up [--load-delay:800ms]" : "[--reveal-delay:150ms]",
           )}
         >
-          <ContactForm />
+          <ContactForm locale={locale} copy={form} />
         </div>
 
         <div
@@ -73,14 +75,14 @@ export function ContactSection({ variant }: Props) {
             isPage && "motion-load-clip [--load-delay:400ms]",
           )}
         >
-          <Image src={map} alt={MAP_ALT} fill sizes="(min-width: 1440px) 628px, 45vw" className="object-cover" />
+          <Image src={map} alt={contact.mapAlt} fill sizes="(min-width: 1440px) 628px, 45vw" className="object-cover" />
         </div>
       </div>
 
       <div className={cn("container-page", !isPage && "hidden lg:block")}>
         <hr className="mt-18 hidden border-ink/10 lg:block lg:max-w-[1200px]" />
         <div className={cn("mt-36 lg:mt-18", isPage ? "lg:sr-only" : "sr-only")}>
-          <SectionTitle>Coordonnées</SectionTitle>
+          <SectionTitle>{contact.detailsTitle}</SectionTitle>
         </div>
         <dl data-reveal="children" className="mt-8 grid gap-4 lg:mt-18 lg:grid-cols-4 lg:items-start lg:gap-6">
           {details.map((item, index) => (
@@ -94,10 +96,10 @@ export function ContactSection({ variant }: Props) {
         {isPage && (
           <div className="lg:hidden">
             <div data-reveal="clip" className="relative mt-8 aspect-[328/182] overflow-hidden">
-              <Image src={map} alt={MAP_ALT} fill sizes="100vw" className="object-cover" />
+              <Image src={map} alt={contact.mapAlt} fill sizes="100vw" className="object-cover" />
             </div>
             <div data-reveal="self" className="mt-8">
-              <ButtonLink href="#formulaire">Envoyer ma demande</ButtonLink>
+              <ButtonLink href="#formulaire">{contact.submitMobile}</ButtonLink>
             </div>
           </div>
         )}

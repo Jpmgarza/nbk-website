@@ -1,24 +1,22 @@
 import { LegalPage } from "@/components/sections/legal/LegalPage";
 import { SITE } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import { PAGES } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 
-export const metadata = pageMetadata({
-  title: "Mentions légales",
-  description:
-    "Mentions légales du site NBK Interprétation & Traduction Juridique : éditrice, contact, hébergement, propriété intellectuelle et responsabilité quant au contenu.",
-  path: "/mentions-legales",
-  noindex: true,
-});
+export const metadata = pageMetadata({ locale: "fr", page: "legal", noindex: true });
+
+const { legalPage } = getContent("fr");
 
 export default function LegalNoticePage() {
   return (
-    <LegalPage title="Mentions légales" updated="30 septembre 2026">
+    <LegalPage title="Mentions légales" updated={{ label: legalPage.updated, date: legalPage.date }}>
       <section>
         <h2>Éditrice du site</h2>
         <p>
           {SITE.name}
           <br />
-          {SITE.owner}
+          {SITE.owner}, entreprise individuelle non inscrite au registre du commerce
           <br />
           E-mail : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
           <br />
@@ -44,7 +42,7 @@ export default function LegalNoticePage() {
         <h2>Protection des données</h2>
         <p>
           Le traitement des données personnelles est décrit dans la page{" "}
-          <a href="/protection-des-donnees">Protection des données</a>.
+          <a href={PAGES.privacy.fr}>Protection des données</a>.
         </p>
       </section>
       <section>

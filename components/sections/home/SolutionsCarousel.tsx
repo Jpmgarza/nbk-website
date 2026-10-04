@@ -12,7 +12,7 @@ import {
   type CSSProperties,
 } from "react";
 import { cn } from "@/lib/cn";
-import type { Service } from "@/lib/data/services";
+import type { Service } from "@/lib/content";
 
 const CARD_GAP = 24;
 const AUTOPLAY_MS = 5000;
@@ -34,7 +34,16 @@ function subscribeToMotionPreference(onChange: () => void) {
  * next card, so pausing the animation (hover, keyboard focus, off screen) pauses
  * autoplay too. No autoplay with reduced motion.
  */
-export function SolutionsCarousel({ services }: { services: Service[] }) {
+type Props = {
+  services: Service[];
+  servicesPath: string;
+  /** Accessible name of the scrolling list. */
+  label: string;
+  /** Prefix of each indicator's name, punctuation included ("Afficher :", "Ver:"). */
+  showLabel: string;
+};
+
+export function SolutionsCarousel({ services, servicesPath, label, showLabel }: Props) {
   const count = services.length;
   const loop = [...services, ...services, ...services];
   const trackRef = useRef<HTMLUListElement>(null);
@@ -135,7 +144,7 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
         ref={trackRef}
         data-reveal="self"
         tabIndex={0}
-        aria-label="Solutions proposées, faites défiler horizontalement"
+        aria-label={label}
         className="carousel-track no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto [--reveal-y:0] focus-visible:outline-offset-[-2px]"
       >
         {loop.map((service, position) => {
@@ -148,7 +157,7 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
               className="shrink-0 snap-start"
             >
               <Link
-                href={`/services#${service.slug}`}
+                href={`${servicesPath}#${service.slug}`}
                 tabIndex={isCopy ? -1 : undefined}
                 className="relative flex h-[535px] w-[410px] flex-col justify-end gap-2.5 overflow-hidden rounded px-4 py-8 text-bg"
               >
@@ -163,7 +172,12 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
                   aria-hidden="true"
                   className="absolute inset-0 bg-[linear-gradient(180deg,rgb(29_29_27/0)_0%,rgb(29_29_27/0.3)_35%,rgb(29_29_27/0.7)_65%,rgb(29_29_27)_100%)]"
                 />
-                <h3 className="relative max-w-[328px] font-display text-h3 font-semibold leading-[1.05]">{service.title}</h3>
+                {/* Loop copies are not headings, so the outline lists each service once. */}
+                {isCopy ? (
+                  <p className="relative max-w-[328px] font-display text-h3 font-semibold leading-[1.05]">{service.title}</p>
+                ) : (
+                  <h3 className="relative max-w-[328px] font-display text-h3 font-semibold leading-[1.05]">{service.title}</h3>
+                )}
                 <p className="relative text-body">{service.summary}</p>
               </Link>
             </li>
@@ -176,7 +190,7 @@ export function SolutionsCarousel({ services }: { services: Service[] }) {
           <button
             key={service.slug}
             type="button"
-            aria-label={`Afficher : ${service.title}`}
+            aria-label={`${showLabel} ${service.title}`}
             aria-current={index === active ? "true" : undefined}
             onClick={() => goTo(index)}
             className="group -my-2.5 flex h-11 w-12 items-center"

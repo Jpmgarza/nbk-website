@@ -1,17 +1,19 @@
 import { ButtonLink } from "@/components/ui/Button";
 import { CalloutCard } from "@/components/ui/CalloutCard";
 import { SectionTitle } from "@/components/ui/SectionTitle";
-import { PROBLEMS } from "@/lib/data/home";
+import { getContent } from "@/lib/content";
+import { PAGES, type Locale } from "@/lib/i18n";
 import { revealIndex } from "@/lib/motion";
 
-export function Problems() {
+export function Problems({ locale }: { locale: Locale }) {
+  const { problems: PROBLEMS, anchors } = getContent(locale);
   return (
-    <section id="problemes" aria-labelledby="problemes-title" className="section overflow-x-clip">
+    <section id={anchors.problems} aria-labelledby="problemes-title" className="section overflow-x-clip">
       <div className="container-page">
         <div className="lg:max-w-[1200px]">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
             <SectionTitle id="problemes-title" reveal="scroll" className="lg:w-[519px] lg:shrink-0">
-              Vos problèmes
+              {PROBLEMS.title}
             </SectionTitle>
             <p data-reveal="self" className="max-w-[56ch] text-body lg:hidden">
               {PROBLEMS.summary}
@@ -46,8 +48,8 @@ export function Problems() {
           </div>
         </div>
 
-        <ButtonLink href="/#solutions" size="wide" className="mt-8 lg:mt-12">
-          Trouver une solution
+        <ButtonLink href={`${PAGES.home[locale]}#${anchors.solutions}`} size="wide" className="mt-8 lg:mt-12">
+          {PROBLEMS.cta}
         </ButtonLink>
       </div>
     </section>

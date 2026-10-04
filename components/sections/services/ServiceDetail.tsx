@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { SectionTitle } from "@/components/ui/SectionTitle";
-import type { Service } from "@/lib/data/services";
+import type { Service } from "@/lib/content";
+import { PAGES, type Locale } from "@/lib/i18n";
 import { revealIndex } from "@/lib/motion";
 
 const subheadingClass = "font-display text-h4 font-semibold lg:text-h3";
 
-export function ServiceDetail({ service }: { service: Service }) {
+export function ServiceDetail({ service, locale }: { service: Service; locale: Locale }) {
   const titleId = `${service.slug}-title`;
 
   return (
@@ -46,7 +47,7 @@ export function ServiceDetail({ service }: { service: Service }) {
 
           {/* The reveal sits on a wrapper: the button has its own transitions. */}
           <div data-reveal="self" className="mt-8 [--reveal-delay:330ms] lg:mt-12">
-            <ButtonLink href={`/contact?mission=${encodeURIComponent(service.title)}`}>{service.cta}</ButtonLink>
+            <ButtonLink href={`${PAGES.contact[locale]}?mission=${service.key}`}>{service.cta}</ButtonLink>
           </div>
         </div>
 

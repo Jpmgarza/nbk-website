@@ -3,22 +3,31 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { cn } from "@/lib/cn";
-import { SERVICES } from "@/lib/data/services";
+import { getContent, getServices } from "@/lib/content";
+import { PAGES, type Locale } from "@/lib/i18n";
 import { SolutionsCarousel } from "./SolutionsCarousel";
 
-export function Solutions() {
+export function Solutions({ locale }: { locale: Locale }) {
+  const { solutions, anchors } = getContent(locale);
+  const services = getServices(locale);
+  const servicesPath = PAGES.services[locale];
   return (
-    <section id="solutions" aria-labelledby="solutions-title" className="section overflow-hidden">
+    <section id={anchors.solutions} aria-labelledby="solutions-title" className="section overflow-hidden">
       <div className="container-page">
-        <SectionTitle id="solutions-title" reveal="scroll">Vos solutions</SectionTitle>
+        <SectionTitle id="solutions-title" reveal="scroll">{solutions.title}</SectionTitle>
       </div>
 
       <div className="hidden lg:block">
-        <SolutionsCarousel services={SERVICES} />
+        <SolutionsCarousel
+          services={services}
+          servicesPath={servicesPath}
+          label={solutions.carouselLabel}
+          showLabel={solutions.show}
+        />
       </div>
 
       <ul className="container-page mt-8 flex flex-col gap-12 lg:hidden">
-        {SERVICES.map((service, index) => {
+        {services.map((service, index) => {
           const imageFirst = index % 2 === 1;
           return (
             <li
@@ -27,7 +36,7 @@ export function Solutions() {
               className={imageFirst ? "[--reveal-x:-2.5rem] [--reveal-y:0]" : "[--reveal-x:2.5rem] [--reveal-y:0]"}
             >
               <Link
-                href={`/services#${service.slug}`}
+                href={`${servicesPath}#${service.slug}`}
                 className={cn(
                   "group grid items-center",
                   imageFirst
@@ -52,9 +61,9 @@ export function Solutions() {
       </ul>
 
       <div className="container-page">
-        <ButtonLink href="/services" size="wide" className="mt-8 lg:mt-12">
-          <span className="lg:hidden">Choisir mon service</span>
-          <span className="hidden lg:inline">Découvrir les solutions</span>
+        <ButtonLink href={servicesPath} size="wide" className="mt-8 lg:mt-12">
+          <span className="lg:hidden">{solutions.ctaMobile}</span>
+          <span className="hidden lg:inline">{solutions.ctaDesktop}</span>
         </ButtonLink>
       </div>
     </section>

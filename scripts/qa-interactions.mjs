@@ -90,7 +90,13 @@ const check = (name, ok, detail = "") => results.push(`${ok ? "OK  " : "FAIL"} $
 // Form validation and mission prefill
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.goto(BASE + "/contact?mission=" + encodeURIComponent("Interprétation chuchotée"), { waitUntil: "networkidle" });
+  // The server action POSTs to the page URL. Unless QA_SEND=1, answer it here so a run never e-mails Noelia.
+  if (!process.env.QA_SEND) {
+    await page.route("**/contact*", (route) =>
+      route.request().method() === "POST" ? route.fulfill({ status: 500, body: "" }) : route.continue(),
+    );
+  }
+  await page.goto(BASE + "/contact?mission=chuchotee", { waitUntil: "networkidle" });
   const mission = (await page.getByRole("combobox", { name: "Type de mission" }).textContent())?.trim();
   check("mission pré-remplie depuis la page Services", mission === "Interprétation chuchotée", mission);
   await page.getByRole("button", { name: "Envoyer ma demande" }).first().click();
@@ -120,7 +126,32 @@ const check = (name, ok, detail = "") => results.push(`${ok ? "OK  " : "FAIL"} $
   await page.waitForTimeout(1500);
   const alert = await page.locator("form [role=alert]").textContent().catch(() => null);
   const status = await page.locator("[role=status]").textContent().catch(() => null);
-  check("envoi traité (production sans SMTP → message d’erreur honnête)", Boolean(alert || status), alert ?? status ?? "");
+  check(process.env.QA_SEND ? "envoi réel traité" : "échec d’envoi simulé, message affiché", Boolean(alert || status), alert ?? status ?? "");
+  await page.close();
+}
+
+// Spanish version: language switch, hreflang, translated form
+{
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto(BASE + "/services", { waitUntil: "networkidle" });
+  await page.getByRole("link", { name: "Español" }).click();
+  await page.waitForURL("**/es/servicios");
+  check("lien Español mène à la page équivalente", page.url().endsWith("/es/servicios"), page.url());
+  check("lang=es sur la version espagnole", (await page.locator("html").getAttribute("lang")) === "es");
+  const hreflang = await page.locator('link[rel=alternate][hreflang="fr-CH"]').getAttribute("href");
+  check("hreflang vers la version française", hreflang?.endsWith("/services") ?? false, hreflang ?? "absent");
+  await page.getByRole("link", { name: "Reservar mi intérprete" }).click();
+  await page.waitForURL("**/es/contacto?mission=chuchotee");
+  const mission = (await page.getByRole("combobox", { name: "Tipo de servicio" }).textContent())?.trim();
+  check("servicio preseleccionado", mission === "Interpretación susurrada", mission);
+  await page.getByRole("button", { name: "Enviar mi solicitud" }).first().click();
+  const errors = await page.locator("form [id$='-error']").allTextContents();
+  check("errores del formulario en español", errors.includes("Indique su nombre y apellidos."), errors.join(" | "));
+  await page.getByRole("link", { name: "Français" }).click();
+  await page.waitForURL("**/contact");
+  check("lien Français ramène à /contact", page.url().endsWith("/contact"), page.url());
+  const missing = await page.goto(BASE + "/es/no-existe");
+  check("404 espagnole", missing?.status() === 404 && (await page.locator("h1").textContent())?.trim() === "Página no encontrada");
   await page.close();
 }
 

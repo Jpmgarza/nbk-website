@@ -1,12 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { Controller, useForm, type FieldError } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
 import { cn } from "@/lib/cn";
-import { contactSchema, LANGUAGE_OPTIONS, MISSION_OPTIONS, type ContactInput } from "@/lib/contact-schema";
+import { SITE } from "@/lib/constants";
+import { LANGUAGE_KEYS, makeContactSchema, MISSION_KEYS, type ContactInput } from "@/lib/contact-schema";
+import type { FormCopy } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
 import { sendContactRequest } from "./actions";
 
 const labelClass = "font-display text-h4 lg:font-semibold";
@@ -22,8 +25,11 @@ function FieldMessage({ id, error }: { id: string; error?: FieldError }) {
   );
 }
 
-export function ContactForm() {
+export function ContactForm({ locale, copy }: { locale: Locale; copy: FormCopy }) {
   const id = useId();
+  const schema = useMemo(() => makeContactSchema(copy.errors), [copy.errors]);
+  const missionOptions = MISSION_KEYS.map((value) => ({ value, label: copy.missions[value] }));
+  const languageOptions = LANGUAGE_KEYS.map((value) => ({ value, label: copy.languages[value] }));
   const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
   const [serverMessage, setServerMessage] = useState("");
 
@@ -34,19 +40,23 @@ export function ContactForm() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", comment: "", website: "" },
+    resolver: zodResolver(schema),
+    defaultValues: { name: "", email: "", comment: "", website: "", locale },
   });
 
   useEffect(() => {
     const mission = new URLSearchParams(window.location.search).get("mission");
-    const option = MISSION_OPTIONS.find((value) => value === mission);
+    const option = MISSION_KEYS.find((value) => value === mission);
     if (option) setValue("mission", option);
   }, [setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     setStatus("idle");
-    const result = await sendContactRequest(data);
+    // A failed request (offline, server error) rejects instead of returning a result.
+    const result = await sendContactRequest(data).catch(() => ({
+      ok: false as const,
+      message: copy.fallback.replace("{email}", SITE.email).replace("{phone}", SITE.phone.display),
+    }));
     if (result.ok) {
       setStatus("sent");
     } else {
@@ -58,8 +68,8 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div role="status" className="flex flex-col gap-3 rounded bg-bg p-6 shadow-card">
-        <p className="font-display text-h4 font-semibold text-accent">Merci, votre demande est bien envoyée.</p>
-        <p className="text-body-loose">Une réponse personnalisée vous sera apportée dans les meilleurs délais.</p>
+        <p className="font-display text-h4 font-semibold text-accent">{copy.sentTitle}</p>
+        <p className="text-body-loose">{copy.sentText}</p>
       </div>
     );
   }
@@ -67,11 +77,11 @@ export function ContactForm() {
   const describedBy = (field: keyof ContactInput) => (errors[field] ? `${id}-${field}-error` : undefined);
 
   return (
-    <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-6" aria-label="Demande de devis">
+    <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-6" aria-label={copy.ariaLabel}>
       <div className="grid gap-4 lg:grid-cols-2 lg:gap-x-6">
         <div className="flex flex-col gap-2">
           <label htmlFor={`${id}-name`} className={labelClass}>
-            Nom et prénom
+            {copy.labels.name}
           </label>
           <input
             id={`${id}-name`}
@@ -87,7 +97,7 @@ export function ContactForm() {
 
         <div className="flex flex-col gap-2">
           <label htmlFor={`${id}-email`} className={labelClass}>
-            E-mail
+            {copy.labels.email}
           </label>
           <input
             id={`${id}-email`}
@@ -104,7 +114,7 @@ export function ContactForm() {
 
         <div className="flex flex-col gap-2">
           <label id={`${id}-mission-label`} htmlFor={`${id}-mission`} className={labelClass}>
-            Type de mission
+            {copy.labels.mission}
           </label>
           <Controller
             control={control}
@@ -113,7 +123,8 @@ export function ContactForm() {
               <Select
                 id={`${id}-mission`}
                 labelId={`${id}-mission-label`}
-                options={MISSION_OPTIONS}
+                options={missionOptions}
+                placeholder={copy.placeholder}
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -129,7 +140,7 @@ export function ContactForm() {
 
         <div className="flex flex-col gap-2">
           <label id={`${id}-languages-label`} htmlFor={`${id}-languages`} className={labelClass}>
-            Langues concernées
+            {copy.labels.languages}
           </label>
           <Controller
             control={control}
@@ -138,7 +149,8 @@ export function ContactForm() {
               <Select
                 id={`${id}-languages`}
                 labelId={`${id}-languages-label`}
-                options={LANGUAGE_OPTIONS}
+                options={languageOptions}
+                placeholder={copy.placeholder}
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -154,7 +166,7 @@ export function ContactForm() {
 
         <div className="flex flex-col gap-2 lg:col-span-2">
           <label htmlFor={`${id}-comment`} className={labelClass}>
-            Commentaire
+            {copy.labels.comment}
           </label>
           <textarea
             id={`${id}-comment`}
@@ -169,7 +181,7 @@ export function ContactForm() {
       </div>
 
       <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-px w-px overflow-hidden">
-        <label htmlFor={`${id}-website`}>Site web</label>
+        <label htmlFor={`${id}-website`}>{copy.labels.honeypot}</label>
         <input id={`${id}-website`} type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
       </div>
 
@@ -180,7 +192,7 @@ export function ContactForm() {
       )}
 
       <Button type="submit" size="wide" className="self-start" disabled={isSubmitting}>
-        {isSubmitting ? "Envoi en cours…" : "Envoyer ma demande"}
+        {isSubmitting ? copy.sending : copy.submit}
       </Button>
     </form>
   );

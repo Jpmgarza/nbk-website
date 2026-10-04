@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { FaqItem } from "@/lib/data/faq";
+import type { FaqItem } from "@/lib/content";
 import { cn } from "@/lib/cn";
 import { revealIndex } from "@/lib/motion";
 

@@ -1,39 +1,27 @@
 import { z } from "zod";
-import { SERVICE_NAMES } from "./data/service-names";
+import type { FormCopy } from "./content/types";
+import { SERVICE_KEYS } from "./data/services";
 
-export const MISSION_OPTIONS = [...SERVICE_NAMES, "Autre"] as const;
+export const MISSION_KEYS = [...SERVICE_KEYS, "autre"] as const;
+export type MissionKey = (typeof MISSION_KEYS)[number];
 
-export const LANGUAGE_OPTIONS = [
-  "Français → espagnol",
-  "Espagnol → français",
-  "Dans les deux sens",
-  "Autre (à préciser dans le commentaire)",
-] as const;
+export const LANGUAGE_KEYS = ["fr-es", "es-fr", "both", "other"] as const;
+export type LanguageKey = (typeof LANGUAGE_KEYS)[number];
 
-export const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, "Indiquez votre nom et prénom.")
-    .max(120, "Ce nom est trop long."),
-  email: z
-    .string()
-    .trim()
-    .min(1, "Indiquez votre adresse e-mail.")
-    .email("Cette adresse e-mail n’est pas valide.")
-    .max(200, "Cette adresse e-mail est trop longue."),
-  mission: z.enum(MISSION_OPTIONS, {
-    errorMap: () => ({ message: "Choisissez le type de mission." }),
-  }),
-  languages: z.enum(LANGUAGE_OPTIONS, {
-    errorMap: () => ({ message: "Choisissez les langues concernées." }),
-  }),
-  comment: z
-    .string()
-    .trim()
-    .min(1, "Décrivez brièvement votre besoin.")
-    .max(3000, "Votre message est trop long (3000 caractères au plus)."),
-  website: z.string().max(0).optional(),
-});
+export const SITE_LOCALES = ["fr", "es"] as const;
 
-export type ContactInput = z.infer<typeof contactSchema>;
+/** Same rules in both languages; only the messages change. */
+export function makeContactSchema(errors: FormCopy["errors"]) {
+  return z.object({
+    name: z.string().trim().min(2, errors.nameMissing).max(120, errors.nameTooLong),
+    email: z.string().trim().min(1, errors.emailMissing).email(errors.emailInvalid).max(200, errors.emailTooLong),
+    mission: z.enum(MISSION_KEYS, { errorMap: () => ({ message: errors.mission }) }),
+    languages: z.enum(LANGUAGE_KEYS, { errorMap: () => ({ message: errors.languages }) }),
+    comment: z.string().trim().min(1, errors.comment).max(3000, errors.commentTooLong),
+    website: z.string().max(0).optional(),
+    /** Language of the page the request was sent from, so the reply can be written in it. */
+    locale: z.enum(SITE_LOCALES),
+  });
+}
+
+export type ContactInput = z.infer<ReturnType<typeof makeContactSchema>>;

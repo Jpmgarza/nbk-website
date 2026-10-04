@@ -3,16 +3,18 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type RefCallback } from "react";
 import { cn } from "@/lib/cn";
 
+export type SelectOption = { value: string; label: string };
+
 type SelectProps = {
   id: string;
   /** Id of the visible label; names both the trigger and the list. */
   labelId: string;
-  options: readonly string[];
+  options: readonly SelectOption[];
   value: string | undefined;
   onChange: (value: string) => void;
   onBlur?: () => void;
   buttonRef?: RefCallback<HTMLButtonElement>;
-  placeholder?: string;
+  placeholder: string;
   invalid?: boolean;
   describedBy?: string;
   /** Classes for the trigger, so it matches the other form fields. */
@@ -37,7 +39,7 @@ export function Select({
   onChange,
   onBlur,
   buttonRef,
-  placeholder = "Choisir",
+  placeholder,
   invalid,
   describedBy,
   className,
@@ -50,7 +52,7 @@ export function Select({
 
   const listId = `${id}-listbox`;
   const optionId = (index: number) => `${id}-option-${index}`;
-  const selectedIndex = value === undefined ? -1 : options.indexOf(value);
+  const selectedIndex = value === undefined ? -1 : options.findIndex((option) => option.value === value);
   const last = options.length - 1;
 
   const openAt = (index: number) => {
@@ -59,7 +61,7 @@ export function Select({
   };
 
   const choose = (index: number) => {
-    onChange(options[index]);
+    onChange(options[index].value);
     setOpen(false);
   };
 
@@ -88,7 +90,7 @@ export function Select({
     const start = state.text.length === 1 ? from + 1 : Math.max(from, 0);
     for (let step = 0; step < options.length; step++) {
       const index = (start + step) % options.length;
-      if (normalize(options[index]).startsWith(state.text)) return index;
+      if (normalize(options[index].label).startsWith(state.text)) return index;
     }
     return -1;
   };
@@ -171,7 +173,7 @@ export function Select({
           onBlur?.();
         }}
       >
-        <span className="truncate">{value ?? placeholder}</span>
+        <span className="truncate">{selectedIndex >= 0 ? options[selectedIndex].label : placeholder}</span>
         <svg
           aria-hidden="true"
           viewBox="0 0 12 8"
@@ -196,7 +198,7 @@ export function Select({
           const selected = index === selectedIndex;
           return (
             <li
-              key={option}
+              key={option.value}
               id={optionId(index)}
               role="option"
               aria-selected={selected}
@@ -208,7 +210,7 @@ export function Select({
               onMouseMove={() => index !== active && setActive(index)}
               onClick={() => choose(index)}
             >
-              {option}
+              {option.label}
               {selected && (
                 <svg aria-hidden="true" viewBox="0 0 14 10" className="h-2.5 w-3.5 shrink-0">
                   <path d="M1 5.2 4.8 9 13 1" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

@@ -1,12 +1,23 @@
 "use server";
 
 import nodemailer from "nodemailer";
-import { contactSchema } from "@/lib/contact-schema";
+import { makeContactSchema, SITE_LOCALES } from "@/lib/contact-schema";
 import { SITE } from "@/lib/constants";
+import { getContent } from "@/lib/content";
 
 export type ContactResult = { ok: true } | { ok: false; message: string };
 
-const FALLBACK_MESSAGE = `L’envoi n’a pas abouti. Vous pouvez réessayer, écrire à ${SITE.email} ou appeler le ${SITE.phone.display}.`;
+// The e-mail to Noelia is always in French; only the visitor-facing messages follow the page language.
+const fr = getContent("fr");
+const PAGE_LANGUAGE = { fr: "Français", es: "Espagnol" } as const;
+
+function visitorCopy(locale: unknown) {
+  return getContent(SITE_LOCALES.find((value) => value === locale) ?? "fr").form;
+}
+
+function fallbackMessage(locale: unknown) {
+  return visitorCopy(locale).fallback.replace("{email}", SITE.email).replace("{phone}", SITE.phone.display);
+}
 
 function escapeHtml(value: string) {
   return value
@@ -36,9 +47,10 @@ function renderEmail(rows: [string, string][], comment: string) {
 }
 
 export async function sendContactRequest(input: unknown): Promise<ContactResult> {
-  const parsed = contactSchema.safeParse(input);
+  const locale = (input as { locale?: unknown } | null)?.locale;
+  const parsed = makeContactSchema(fr.form.errors).safeParse(input);
   if (!parsed.success) {
-    return { ok: false, message: "Certains champs sont incomplets. Vérifiez le formulaire." };
+    return { ok: false, message: visitorCopy(locale).invalid };
   }
 
   const { website, ...data } = parsed.data;
@@ -46,24 +58,18 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
     return { ok: true };
   }
 
-  const text = [
-    "Nouvelle demande de devis",
-    "",
-    `Nom et prénom : ${data.name}`,
-    `E-mail : ${data.email}`,
-    `Type de mission : ${data.mission}`,
-    `Langues concernées : ${data.languages}`,
-    "",
-    "Commentaire :",
-    data.comment,
-  ].join("\n");
-
-  const html = renderEmail([
+  const rows: [string, string][] = [
     ["Nom et prénom", data.name],
     ["E-mail", data.email],
-    ["Type de mission", data.mission],
-    ["Langues concernées", data.languages],
-  ], data.comment);
+    ["Type de mission", fr.form.missions[data.mission]],
+    ["Langues concernées", fr.form.languages[data.languages]],
+    ["Langue du site", PAGE_LANGUAGE[data.locale]],
+  ];
+
+  const text = ["Nouvelle demande de devis", "", ...rows.map(([label, value]) => `${label} : ${value}`), "", "Commentaire :", data.comment].join(
+    "\n",
+  );
+  const html = renderEmail(rows, data.comment);
 
   const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM, SMTP_TO } = process.env;
 
@@ -71,7 +77,7 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
     console.info(`[contact] SMTP non configuré. Demande reçue :\n${text}`);
     // In production an unconfigured mailer must not pretend the request was delivered.
     if (process.env.NODE_ENV === "production") {
-      return { ok: false, message: FALLBACK_MESSAGE };
+      return { ok: false, message: fallbackMessage(data.locale) };
     }
     return { ok: true };
   }
@@ -88,7 +94,7 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
       from: SMTP_FROM ?? SMTP_USER,
       to: SMTP_TO ?? SITE.email,
       replyTo: { name: data.name, address: data.email },
-      subject: `Nouvelle demande de devis : ${data.mission}`,
+      subject: `Nouvelle demande de devis : ${fr.form.missions[data.mission]}${data.locale === "es" ? " (site en espagnol)" : ""}`,
       text,
       html,
     });
@@ -96,6 +102,6 @@ export async function sendContactRequest(input: unknown): Promise<ContactResult>
     return { ok: true };
   } catch (error) {
     console.error("[contact] Échec de l’envoi", error);
-    return { ok: false, message: FALLBACK_MESSAGE };
+    return { ok: false, message: fallbackMessage(data.locale) };
   }
 }
