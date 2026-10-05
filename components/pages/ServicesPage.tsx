@@ -4,7 +4,7 @@ import { PageHero } from "@/components/sections/shared/PageHero";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getContent, getServices } from "@/lib/content";
 import { PAGES, type Locale } from "@/lib/i18n";
-import { servicesSchema } from "@/lib/structured-data";
+import { breadcrumbSchema, servicesSchema } from "@/lib/structured-data";
 
 export function ServicesPage({ locale }: { locale: Locale }) {
   const { servicesHero } = getContent(locale);
@@ -13,6 +13,7 @@ export function ServicesPage({ locale }: { locale: Locale }) {
       <PageHero
         className="lg:pt-12"
         align="start"
+        titleSize="compact"
         title={servicesHero.title}
         body={<p className="text-body">{servicesHero.body}</p>}
         cta={{ label: servicesHero.cta, href: PAGES.contact[locale] }}
@@ -24,6 +25,7 @@ export function ServicesPage({ locale }: { locale: Locale }) {
         <ServiceDetail key={service.slug} service={service} locale={locale} />
       ))}
       <JsonLd data={servicesSchema(locale)} />
+      <JsonLd data={breadcrumbSchema(locale, "services")} />
     </>
   );
 }

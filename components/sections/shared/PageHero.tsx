@@ -13,6 +13,8 @@ type Props = {
   imageAlt?: string;
   imageClassName?: string;
   align?: "center" | "start";
+  /** "compact" caps the desktop title at 92px, for titles with a long word. */
+  titleSize?: "default" | "compact";
   className?: string;
 };
 
@@ -20,7 +22,7 @@ type Props = {
  * Below lg the title sits on the photo (full-bleed, darkened at the bottom); from lg the
  * photo moves to a right-hand column. Both layouts come from the same grid via named areas.
  */
-export function PageHero({ title, body, cta, image, imageAlt, imageClassName, align = "center", className }: Props) {
+export function PageHero({ title, body, cta, image, imageAlt, imageClassName, align = "center", titleSize = "default", className }: Props) {
   return (
     <section className={cn("lg:container-page lg:pb-24", className)}>
       <div
@@ -53,7 +55,7 @@ export function PageHero({ title, body, cta, image, imageAlt, imageClassName, al
 
         <SectionTitle
           as="h1"
-          size="display"
+          size={titleSize === "compact" ? "display-compact" : "display"}
           tone="hero"
           reveal="load"
           className="z-10 self-end px-gutter pb-8 [grid-area:media] lg:max-w-[629px] lg:px-0 lg:pb-0 lg:[grid-area:title]"

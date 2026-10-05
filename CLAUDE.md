@@ -121,7 +121,7 @@ Noelia is always in French and says which language the visitor used.
 
 ## SEO
 
-The domain `https://www.nbk-interp.ch` is fixed in `lib/constants.ts` (not an env var) so canonical
+The domain `https://nbk-interp.ch` (apex, no www: www has no DNS record) is fixed in `lib/constants.ts` (not an env var) so canonical
 tags and the sitemap always point to it. Every page sets metadata with `pageMetadata()` from
 `lib/seo.ts` (`pageMetadata({ locale, page })`), which also writes hreflang alternates (fr-CH, es,
 x-default = French); the sitemap lists both languages with alternates. Legal pages are `noindex` and

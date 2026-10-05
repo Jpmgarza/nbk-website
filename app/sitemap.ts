@@ -9,7 +9,8 @@ const INDEXED: { page: PageKey; changeFrequency: "monthly" | "yearly"; priority:
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-10-02");
+  // Build date: the sitemap is regenerated on every deploy, so this tracks the last content change.
+  const lastModified = new Date();
   const url = (path: string) => `${SITE.url}${path}`;
 
   return INDEXED.flatMap(({ page, changeFrequency, priority }) =>

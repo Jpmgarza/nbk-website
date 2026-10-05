@@ -6,7 +6,7 @@ type Props = {
   children: ReactNode;
   as?: "h1" | "h2";
   id?: string;
-  size?: "display" | "section";
+  size?: "display" | "display-compact" | "section";
   tone?: "ink" | "light" | "hero";
   rule?: "accent" | "ink";
   className?: string;
@@ -17,6 +17,7 @@ type Props = {
 
 const SIZES = {
   display: "text-h3 font-normal lg:text-h1 lg:font-semibold lg:leading-[0.95]",
+  "display-compact": "text-h3 font-normal lg:text-h1-compact lg:font-semibold lg:leading-[0.95]",
   section: "text-h3 font-normal lg:text-h2 lg:font-semibold",
 };
 

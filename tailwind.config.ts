@@ -36,6 +36,8 @@ const config: Config = {
         numeral: ["3.5556rem", { lineHeight: "1" }],
         h2: ["clamp(3.25rem, 5.27vw, 4.7406rem)", { lineHeight: "1.055" }],
         h1: ["clamp(4.25rem, 7.03vw, 6.3213rem)", { lineHeight: "1.03" }],
+        // Same slope, capped at 92px so "d’interprétariat" (6.66em wide) fits the 629px hero column.
+        "h1-compact": ["clamp(4.25rem, 7.03vw, 5.75rem)", { lineHeight: "1.03" }],
       },
       spacing: {
         18: "4.5rem",

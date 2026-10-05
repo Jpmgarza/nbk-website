@@ -5,7 +5,7 @@ export const SITE = {
   owner: "Noelia Krähenbühl",
   // Fixed on purpose: canonical URLs, the sitemap and structured data must point to the
   // public domain even when the site is served from a preview URL.
-  url: "https://www.nbk-interp.ch",
+  url: "https://nbk-interp.ch",
   email: "info@nbk-interp.ch",
   phone: {
     display: "078 942 12 67",

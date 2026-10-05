@@ -1,6 +1,6 @@
 import { getContent } from "./content";
 import { SITE } from "./constants";
-import { HTML_LANG, PAGES, type Locale } from "./i18n";
+import { HTML_LANG, PAGES, type Locale, type PageKey } from "./i18n";
 
 const BUSINESS_ID = `${SITE.url}/#business`;
 
@@ -83,5 +83,28 @@ export function servicesSchema(locale: Locale) {
         inLanguage: HTML_LANG[locale],
       },
     })),
+  };
+}
+
+/** Breadcrumbs for pages below the home page; Google shows them in place of the raw URL. */
+export function breadcrumbSchema(locale: Locale, page: Exclude<PageKey, "home">) {
+  const content = getContent(locale);
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: locale === "es" ? "Inicio" : "Accueil",
+        item: `${SITE.url}${PAGES.home[locale]}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: content.meta[page].title,
+        item: `${SITE.url}${PAGES[page][locale]}`,
+      },
+    ],
   };
 }
