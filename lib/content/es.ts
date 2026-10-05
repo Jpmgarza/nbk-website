@@ -114,14 +114,14 @@ export const es: Content = {
     rights: "Todos los derechos reservados.",
   },
   hero: {
-    title: "Su voz, interpretada con fidelidad",
+    title: "Su situación interpretada con exactitud",
     lead: "Interpretación y traducción en los ámbitos jurídico, comunitario y sociosanitario, español",
     join: "y",
-    tail: "francés, a cargo de una intérprete hispanohablante nativa con formación jurídica.",
+    tail: "francés, para particulares, abogados e instituciones.",
     cta: "Pedir presupuesto",
   },
   servicesHero: {
-    title: "Servicios de interpretación y traducción pensados para cada situación",
+    title: "Servicios de interpretación y traducción",
     body: "Cada situación tiene sus propias exigencias. Estos son los servicios disponibles, adaptados a su contexto: jurídico, médico, social o profesional.",
     cta: "Pedir presupuesto",
     imageAlt: "Intérprete profesional con un expediente en una sala de reuniones",
@@ -129,19 +129,19 @@ export const es: Content = {
   expertise: {
     title: "Experiencia y formación",
     intro:
-      "es abogada de formación, hispanohablante nativa y con nivel C2 de francés. Ha trabajado una decena de años en el ámbito jurídico, siete de ellos en el Ministerio Público de Paraguay, y conoce de cerca cómo se desarrolla una audiencia, las etapas de un procedimiento y la importancia de la confidencialidad.",
+      "es abogada de formación, hispanohablante y con nivel C2 de francés. Ha trabajado una decena de años en el ámbito jurídico, siete de ellos en el *Ministerio Público de Paraguay*, y conoce de cerca cómo se desarrolla una audiencia, las etapas de un procedimiento y la importancia de la confidencialidad.",
     proofs: [
       {
         title: "Interpretación",
-        text: "Desde 2022, interpretación simultánea y susurrada entre francés y español en los ámbitos médico, diplomático y jurídico, entre otros para ABC Translation. Intérprete comunitaria para América Latina y España (2022–2025), sujeta al secreto profesional.",
+        text: "Desde 2022, interpretación simultánea y susurrada entre francés y español en los ámbitos médico, diplomático y jurídico, entre otros para *ABC Translation*. Intérprete comunitaria para América Latina y España (2022–2025), sujeta al secreto profesional.",
       },
       {
         title: "Experiencia jurídica",
-        text: "Secretaria en el Ministerio Público de Paraguay (2001–2008) y asistente jurídica en Asunción; después, en bufetes de Lausana y Aubonne (CBWM & Associés, Dugast Avocat) y en la Office d’exécution des peines del cantón de Vaud.",
+        text: "Secretaria en el *Ministerio Público de Paraguay*, de 2001 a 2008, y asistente jurídica en Asunción; después, en bufetes de Lausana y Aubonne (*CBWM & Associés*, *Dugast Avocat*) y en la *Office d’exécution des peines*, cantón de Vaud.",
       },
       {
         title: "Formación jurídica",
-        text: "Título de abogada por la Universidad Nacional de Asunción (Paraguay, 2011) y diploma suizo de secretaria jurídica de la SEC (Lausana, 2019).",
+        text: "Título de abogada por la *Universidad Nacional de Asunción*, Paraguay (2011), y *Diplôme SEC Suisse de secrétaire juridique*, Lausana (2019).",
       },
     ],
     cta: "Hablar con Noelia",
@@ -175,7 +175,7 @@ export const es: Content = {
       { title: "Confirmación del encargo", text: "Se acuerdan con usted los idiomas, la fecha, el lugar y el tipo de intervención." },
       {
         title: "Preparación",
-        text: "El contexto del expediente o de la cita se estudia con antelación, con total confidencialidad.",
+        text: "El contexto del expediente o de la cita se estudia con antelación, con confidencialidad total.",
       },
       { title: "Intervención", text: "La interpretación o la traducción se realiza con precisión el día acordado." },
     ],
@@ -268,10 +268,10 @@ export const es: Content = {
       key: "simultanee",
       slug: "interpretacion-simultanea",
       title: "Interpretación simultánea",
-      summary: "Una comunicación fluida e inmediata, sin pausas, para reuniones de ritmo intenso.",
+      summary: "Una comunicación fluida e inmediata, sin pausas, para reuniones de ritmo sostenido.",
       audience: {
         label: "Ideal para",
-        text: "Conferencias, reuniones con varios participantes y contextos de ritmo intenso.",
+        text: "Conferencias, reuniones con varios participantes y contextos de ritmo sostenido.",
       },
       benefit: { label: "La ventaja", paragraphs: ["La comunicación sigue sin interrupciones, aunque se hable rápido."] },
       cta: "Preparar mi conferencia",

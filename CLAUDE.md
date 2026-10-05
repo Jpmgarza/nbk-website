@@ -104,8 +104,10 @@ No animation library. `styles/motion.css` (unlayered, so it beats utilities) doc
 ## Assets
 
 Figma exports live in `design/source/` (not served). `npm run assets` writes WebP files to
-`assets/images/` (imported statically by `next/image`), plus `app/icon.png`, `app/apple-icon.png`,
-`app/favicon.ico`, `public/icons/*` and `public/og-share.jpg`. The logo exists only as a 713x423 PNG;
+`assets/images/` (imported statically by `next/image`), plus `public/og-share.jpg` and the icons.
+Favicons come from the studio set in `design/source/favicon/` (favicon.ico 16–256, 512, 180 apple, 32) and
+are copied as they are to `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png` and
+`public/icons/icon-512.png`; only `public/icons/icon-192.png` (manifest) is scaled from the 512. The logo exists only as a 713x423 PNG;
 the home portrait is _MG_5033 (photo 19 of the client PDF "Phtographie de noelia.pdf", only 1150x766 there, soft on retina; ask for the full-size export). All PDF photos are in `design/source/photos-noelia/`; the old Figma portrait is kept as `noelia-portrait-figma.png`. Replace the source and rerun the script.
 
 ## Form
@@ -145,8 +147,9 @@ of `Service`, each in the page's language. Pass it only static data from our own
   name, issuer and year to the Expertise section, `llms.txt` and the Person schema.
 - Not published until confirmed: a possible one-off mission for the UN (entity, year, role and proof
   needed) and her home address (Rue du Pont-Neuf 21, L'Orient) for the mentions légales.
-- SEO copy added without the client: "Lausanne" in the service area and home meta description, and the
-  `/services` H1 "Services d’interprétariat et de traduction, pensés pour chaque situation".
+- SEO copy added without the client: "Lausanne" in the service area and home meta description. The
+  `/services` H1 is the short "Services d’interprétariat et de traduction" (client choice): the longer
+  "…, pensés pour chaque situation" wrapped to six lines and ran under the hero photo.
 - The services hero photo is not Noelia; replace it with a real photo before launch.
 - Noelia is not entered in the commercial register, so there is no IDE number; the mentions légales say
   "entreprise individuelle non inscrite au registre du commerce". A postal contact address is still

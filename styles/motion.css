@@ -24,8 +24,8 @@
   overflow: hidden;
   vertical-align: top;
   /* room for descenders inside the mask */
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
 }
 
 .reveal-word-inner {

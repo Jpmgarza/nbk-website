@@ -16,7 +16,7 @@ type Props = {
 };
 
 const SIZES = {
-  display: "text-h3 font-normal lg:text-h1 lg:font-semibold",
+  display: "text-h3 font-normal lg:text-h1 lg:font-semibold lg:leading-[0.95]",
   section: "text-h3 font-normal lg:text-h2 lg:font-semibold",
 };
 

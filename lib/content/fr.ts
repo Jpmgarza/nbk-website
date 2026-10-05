@@ -110,14 +110,14 @@ export const fr: Content = {
     rights: "Tous droits réservés.",
   },
   hero: {
-    title: "Votre voix, fidèlement interprétée",
+    title: "Votre situation, interprétée avec exactitude",
     lead: "Interprétation et traduction juridique, communautaire et médico-sociale, français",
     join: "et",
-    tail: "espagnol, par une interprète de langue maternelle espagnole et de formation juridique.",
+    tail: "espagnol, pour les particuliers, les avocats et les institutions.",
     cta: "Recevoir mon devis",
   },
   servicesHero: {
-    title: "Services d’interprétariat et de traduction, pensés pour chaque situation",
+    title: "Services d’interprétariat et de traduction",
     body: "Chaque situation a ses propres enjeux. Voici les prestations proposées, adaptées à votre contexte : juridique, médical, social ou professionnel.",
     cta: "Recevoir mon devis",
     imageAlt: "Interprète professionnelle tenant un dossier dans une salle de réunion",
@@ -125,19 +125,19 @@ export const fr: Content = {
   expertise: {
     title: "Preuve d’expertise",
     intro:
-      "est juriste de formation, de langue maternelle espagnole et de niveau C2 en français. Elle a travaillé une dizaine d’années dans le milieu juridique, dont sept au Ministère public du Paraguay, et connaît le déroulement d’une audience, les étapes d’une procédure et l’importance de la confidentialité.",
+      "est juriste de formation, de langue maternelle espagnole et de niveau C2 en français. Elle a travaillé une dizaine d’années dans le milieu juridique, dont sept au *Ministère public du Paraguay*, et connaît le déroulement d’une audience, les étapes d’une procédure et l’importance de la confidentialité.",
     proofs: [
       {
         title: "Interprétariat",
-        text: "Depuis 2022, interprétation simultanée et chuchotée français-espagnol dans les domaines médical, diplomatique et juridique, notamment pour ABC Translation. Interprète communautaire pour l’Amérique latine et l’Espagne (2022–2025), soumise au secret professionnel.",
+        text: "Depuis 2022, interprétation simultanée et chuchotée français-espagnol dans les domaines médical, diplomatique et juridique, notamment pour *ABC Translation*. Interprète communautaire pour l’Amérique latine et l’Espagne (2022–2025), soumise au secret professionnel.",
       },
       {
         title: "Expérience juridique",
-        text: "Secrétaire au Ministère public du Paraguay (2001–2008), assistante juridique à Asunción, puis en études d’avocats à Lausanne et Aubonne (CBWM & Associés, Dugast Avocat) et à l’Office d’exécution des peines du canton de Vaud.",
+        text: "Secrétaire au *Ministère public du Paraguay*, de 2001 à 2008, assistante juridique à Asunción, puis en études d’avocats à Lausanne et Aubonne (*CBWM & Associés*, *Dugast Avocat*) et à l’*Office d’exécution des peines*, canton de Vaud.",
       },
       {
         title: "Formation juridique",
-        text: "Diplôme d’avocate, Universidad Nacional de Asunción (Paraguay, 2011), et Diplôme SEC Suisse de secrétaire juridique (Lausanne, 2019).",
+        text: "Diplôme d’avocate, *Universidad Nacional de Asunción*, Paraguay (2011), et *Diplôme SEC Suisse de secrétaire juridique*, Lausanne (2019).",
       },
     ],
     cta: "Échanger avec Noelia",

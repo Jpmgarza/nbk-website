@@ -1,6 +1,6 @@
 // Builds every image the site serves from the Figma exports in design/source.
 // Run with `npm run assets` after replacing a source file.
-import { copyFile, mkdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -36,45 +36,18 @@ for (const name of ["juridique", "communautaire", "simultanee", "chuchotee", "co
 await write(sharp(source("carte-suisse.png")).webp({ quality: 90 }), path.join(imagesDir, "carte-suisse.webp"));
 await write(sharp(source("logo-nbk.png")).webp({ lossless: true }), path.join(imagesDir, "logo-nbk.webp"));
 
-// Icons use the "NBK" letters (top part of the logo) centred on the light background.
-const lettersBand = await sharp(source("logo-nbk.png"))
-  .extract({ left: 0, top: 0, width: 713, height: 250 })
-  .toBuffer();
-const letters = await sharp(lettersBand).trim().toBuffer();
-
-async function icon(size, padding) {
-  const inner = Math.round(size * (1 - padding * 2));
-  const mark = await sharp(letters).resize({ width: inner, height: inner, fit: "inside" }).toBuffer();
-  return sharp({ create: { width: size, height: size, channels: 4, background: BG } })
-    .composite([{ input: mark, gravity: "center" }])
-    .png();
-}
-
-await write(await icon(512, 0.1), path.join(appDir, "icon.png"));
-await write(await icon(180, 0.12), path.join(appDir, "apple-icon.png"));
-await write(await icon(192, 0.1), path.join(iconsDir, "icon-192.png"));
-await write(await icon(512, 0.1), path.join(iconsDir, "icon-512.png"));
-
-// favicon.ico holding 16, 32 and 48 px PNG images.
-const icoSizes = [16, 32, 48];
-const pngs = await Promise.all(icoSizes.map(async (size) => (await icon(size, 0.04)).toBuffer()));
-const header = Buffer.alloc(6 + 16 * pngs.length);
-header.writeUInt16LE(0, 0);
-header.writeUInt16LE(1, 2);
-header.writeUInt16LE(pngs.length, 4);
-let offset = header.length;
-pngs.forEach((png, i) => {
-  const entry = 6 + i * 16;
-  header.writeUInt8(icoSizes[i], entry);
-  header.writeUInt8(icoSizes[i], entry + 1);
-  header.writeUInt16LE(1, entry + 4);
-  header.writeUInt16LE(32, entry + 6);
-  header.writeUInt32LE(png.length, entry + 8);
-  header.writeUInt32LE(offset, entry + 12);
-  offset += png.length;
-});
-await writeFile(path.join(appDir, "favicon.ico"), Buffer.concat([header, ...pngs]));
-report.push("app/favicon.ico  16/32/48");
+// Favicons are drawn by the studio (design/source/favicon, 5 October 2026) and copied as they are;
+// only the 192px manifest icon, which the set lacks, is scaled down from the 512px one.
+const favicon = (name) => source(`favicon/${name}`);
+await copyFile(favicon("favicon.ico"), path.join(appDir, "favicon.ico"));
+await copyFile(favicon("favicon-512.png"), path.join(appDir, "icon.png"));
+await copyFile(favicon("apple-touch-icon.png"), path.join(appDir, "apple-icon.png"));
+await copyFile(favicon("favicon-512.png"), path.join(iconsDir, "icon-512.png"));
+await write(
+  sharp(favicon("favicon-512.png")).resize(192, 192, { kernel: "lanczos3" }).png({ compressionLevel: 9 }),
+  path.join(iconsDir, "icon-192.png"),
+);
+report.push("app/favicon.ico, app/icon.png, app/apple-icon.png, public/icons/icon-512.png  copied from design/source/favicon");
 
 // Share image: logo on the left, portrait on the right.
 const shareLogo = await sharp(source("logo-nbk.png")).resize({ width: 520 }).toBuffer();

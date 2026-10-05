@@ -225,7 +225,7 @@ export function Header({ locale, copy, nav, services }: Props) {
               href={alternatePath(pathname, otherLocale)}
               hrefLang={HTML_LANG[otherLocale]}
               lang={HTML_LANG[otherLocale]}
-              className={cn(navLinkClass, "motion-header-item min-w-11 justify-center")}
+              className="motion-header-item inline-flex min-h-11 min-w-11 items-center justify-center text-body font-semibold uppercase text-accent transition-colors hover:text-accent-strong"
               style={headerItem(nav.length + 1)}
             >
               {/* Short code on screen to spare the nav; the full name ("Español" contains "ES") for assistive tech. */}
