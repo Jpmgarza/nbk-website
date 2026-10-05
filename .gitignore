@@ -10,3 +10,6 @@ next-env.d.ts
 .vercel
 npm-debug.log*
 .DS_Store
+
+# Server-side secrets (created directly on the host, never committed)
+.env.production
