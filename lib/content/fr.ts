@@ -150,7 +150,7 @@ export const fr: Content = {
         ],
       },
     ],
-    cta: "Échanger avec Noelia",
+    cta: "Prendre contact",
   },
   problems: {
     title: "Vos problèmes",

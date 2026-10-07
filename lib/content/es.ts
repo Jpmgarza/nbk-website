@@ -154,7 +154,7 @@ export const es: Content = {
         ],
       },
     ],
-    cta: "Hablar con Noelia",
+    cta: "Ponerse en contacto",
   },
   problems: {
     title: "Los riesgos de no entenderse",
