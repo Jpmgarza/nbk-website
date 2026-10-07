@@ -7,6 +7,15 @@ export const SITE = {
   // public domain even when the site is served from a preview URL.
   url: "https://nbk-interp.ch",
   email: "info@nbk-interp.ch",
+  // Noelia's own address, used as the contact address required by the Swiss unfair-competition
+  // act (LCD art. 3 al. 1 let. s) — not an office, so it is not used as a visiting/service address.
+  address: "Rue du Pont-Neuf 21, 1341 L'Orient",
+  addressSchema: {
+    streetAddress: "Rue du Pont-Neuf 21",
+    postalCode: "1341",
+    addressLocality: "L'Orient",
+    addressCountry: "CH",
+  },
   phone: {
     display: "078 942 12 67",
     href: "tel:+41789421267",

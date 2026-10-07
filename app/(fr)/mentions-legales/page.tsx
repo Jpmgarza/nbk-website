@@ -18,6 +18,8 @@ export default function LegalNoticePage() {
           <br />
           {SITE.owner}, entreprise individuelle non inscrite au registre du commerce
           <br />
+          {SITE.address}
+          <br />
           E-mail : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
           <br />
           Téléphone : <a href={SITE.phone.href}>{SITE.phone.display}</a>

@@ -25,6 +25,21 @@ The project lives in a OneDrive-synced folder: `npm install` and `next dev` are 
 checks build and serve production (`npm run build && npx next start -p 3100`). Stop that server
 before rebuilding, or it keeps serving old chunk names and CSS requests fail with 500.
 
+## Deployment (Infomaniak Web hosting, Node.js site)
+
+Live at https://nbk-interp.ch (apex only; www has no DNS record). The site lives in
+`~/sites/nbk-interp.ch` on the host, cloned from the public GitHub repo. The Manager's Build button
+does not pull from Git, so every update is:
+1. SSH console (Control panel > Open the SSH console): `cd ~/sites/nbk-interp.ch && git pull`
+2. Control panel > Build (answer "No" to reinstalling node_modules unless dependencies changed).
+
+Settings: Node 24, build `npm install && npm run build`, run `npm run start -- -p 3000`, port 3000.
+Use `npm install`, not `npm ci`: a lockfile written on Windows lacks sharp's Linux/WASM optional
+deps (`@emnapi/*`) and `npm ci` refuses it. `sharp` must stay a production dependency (Next needs it
+for `/_next/image`). Heavy commands over SSH get killed (shared-hosting limits); build with the button.
+SMTP secrets are in `~/sites/nbk-interp.ch/.env` on the server only (git-ignored, never commit it);
+the Manager has no environment-variable screen. The SSH console mangles pasted text: type commands.
+
 ## Architecture
 
 Next.js 16 App Router, React 19, TypeScript, Tailwind 3.4. Everything is statically prerendered.
@@ -148,15 +163,23 @@ of `Service`, each in the page's language. Pass it only static data from our own
   formation", not "avocate", in Swiss-facing copy (protected title). If she does hold a certificate, add its
   name, issuer and year to the Expertise section, `llms.txt` and the Person schema.
 - Not published until confirmed: a possible one-off mission for the UN (entity, year, role and proof
-  needed) and her home address (Rue du Pont-Neuf 21, L'Orient) for the mentions légales.
+  needed).
 - SEO copy added without the client: "Lausanne" in the service area and home meta description. The
   `/services` H1 is the short "Services d’interprétariat et de traduction" (client choice): the longer
   "…, pensés pour chaque situation" wrapped to six lines and ran under the hero photo.
 - The services hero photo is not Noelia; replace it with a real photo before launch.
 - Noelia is not entered in the commercial register, so there is no IDE number; the mentions légales say
-  "entreprise individuelle non inscrite au registre du commerce". A postal contact address is still
-  missing (Swiss LCD art. 3 al. 1 let. s asks for an identity and contact address). "Conditions générales"
-  is not linked until a text exists.
+  "entreprise individuelle non inscrite au registre du commerce". The LCD art. 3 al. 1 let. s contact
+  address is her home address (SITE.address in lib/constants.ts, confirmed by her), shown on the
+  mentions légales in both languages. Deliberately not in the ProfessionalService structured data: a
+  schema.org address there can read as a visiting address, and she works at clients' sites, not from
+  home. "Conditions générales" is not linked until a text exists.
+- FAQ tariff answer ("le tarif dépend… un devis vous est transmis") kept as is: checked against the
+  Vaud cantonal police interpreter tariff and INTERPRET's 2013 tariff-structure recommendations
+  (design/source or ask for the PDFs again if needed) — both confirm rates vary by institution,
+  qualification and intervention type, with no single number that would apply to her. Publishing a
+  specific figure risked being wrong for her actual clients (private individuals, law firms), who
+  aren't the police or an INTERPRET-affiliated service.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
