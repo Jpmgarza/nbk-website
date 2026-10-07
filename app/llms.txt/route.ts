@@ -24,7 +24,7 @@ export function GET() {
 
 ## Parcours
 
-${fr.expertise.proofs.map((proof) => `- ${proof.title} : ${proof.text}`).join("\n")}
+${fr.expertise.proofs.map((proof) => `- ${proof.title} : ${proof.text.join(" ")}`).join("\n")}
 
 ## Services
 

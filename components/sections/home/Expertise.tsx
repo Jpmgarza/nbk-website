@@ -24,9 +24,13 @@ export function Expertise({ locale }: { locale: Locale }) {
               <CalloutCard
                 title={proof.title}
                 className="w-full transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:min-h-[204px] hover:shadow-card-hover motion-safe:hover:-translate-y-1.5"
-                textClassName="lg:font-semibold"
+                textClassName="flex flex-col gap-2"
               >
-                <RichText>{proof.text}</RichText>
+                {proof.text.map((line) => (
+                  <span key={line}>
+                    <RichText>{line}</RichText>
+                  </span>
+                ))}
               </CalloutCard>
             </li>
           ))}

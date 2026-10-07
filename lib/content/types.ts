@@ -83,7 +83,7 @@ export type Content = {
   };
   hero: { title: string; lead: string; join: string; tail: string; cta: string };
   servicesHero: { title: string; body: string; cta: string; imageAlt: string };
-  expertise: { title: string; intro: string; proofs: { title: string; text: string }[]; cta: string };
+  expertise: { title: string; intro: string; proofs: { title: string; text: string[] }[]; cta: string };
   problems: {
     title: string;
     summary: string;

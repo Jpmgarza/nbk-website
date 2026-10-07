@@ -128,16 +128,26 @@ export const fr: Content = {
       "est juriste de formation, de langue maternelle espagnole et de niveau C2 en français. Elle a travaillé une dizaine d’années dans le milieu juridique, dont sept au *Ministère public du Paraguay*, et connaît le déroulement d’une audience, les étapes d’une procédure et l’importance de la confidentialité.",
     proofs: [
       {
-        title: "Interprétariat",
-        text: "Depuis 2022, interprétation simultanée et chuchotée français-espagnol dans les domaines médical, diplomatique et juridique, notamment pour *ABC Translation*. Interprète communautaire pour l’Amérique latine et l’Espagne (2022–2025), soumise au secret professionnel.",
+        title: "Interprétariat et langues",
+        text: [
+          "Depuis 2022, interprétation simultanée et chuchotée français-espagnol dans les domaines médical, diplomatique et juridique, notamment pour *ABC Translation*.",
+          "Interprète communautaire pour l’Amérique latine et l’Espagne (2022–2025), soumise au secret professionnel.",
+          "En 2010–2011, assistante de langue vivante (espagnol) dans deux collèges de Saint-Julien-en-Genevois, en France.",
+        ],
       },
       {
         title: "Expérience juridique",
-        text: "Secrétaire au *Ministère public du Paraguay*, de 2001 à 2008, assistante juridique à Asunción, puis en études d’avocats à Lausanne et Aubonne (*CBWM & Associés*, *Dugast Avocat*) et à l’*Office d’exécution des peines*, canton de Vaud.",
+        text: [
+          "Secrétaire au *Ministère public du Paraguay* de 2001 à 2008, puis assistante juridique à Asunción.",
+          "En Suisse, assistante juridique en études d’avocats à Lausanne et Aubonne (*CBWM & Associés*, *Dugast Avocat*) et à l’*Office d’exécution des peines* du canton de Vaud.",
+        ],
       },
       {
         title: "Formation juridique",
-        text: "Diplôme d’avocate, *Universidad Nacional de Asunción*, Paraguay (2011), et *Diplôme SEC Suisse de secrétaire juridique*, Lausanne (2019).",
+        text: [
+          "Diplôme d’avocate, *Universidad Nacional de Asunción*, Paraguay (2011).",
+          "*Diplôme SEC Suisse de secrétaire juridique*, Lausanne (2019).",
+        ],
       },
     ],
     cta: "Échanger avec Noelia",

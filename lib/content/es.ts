@@ -132,16 +132,26 @@ export const es: Content = {
       "es abogada de formación, hispanohablante y con nivel C2 de francés. Ha trabajado una decena de años en el ámbito jurídico, siete de ellos en el *Ministerio Público de Paraguay*, y conoce de cerca cómo se desarrolla una audiencia, las etapas de un procedimiento y la importancia de la confidencialidad.",
     proofs: [
       {
-        title: "Interpretación",
-        text: "Desde 2022, interpretación simultánea y susurrada entre francés y español en los ámbitos médico, diplomático y jurídico, entre otros para *ABC Translation*. Intérprete comunitaria para América Latina y España (2022–2025), sujeta al secreto profesional.",
+        title: "Interpretación e idiomas",
+        text: [
+          "Desde 2022, interpretación simultánea y susurrada entre francés y español en los ámbitos médico, diplomático y jurídico, entre otros para *ABC Translation*.",
+          "Intérprete comunitaria para América Latina y España (2022–2025), sujeta al secreto profesional.",
+          "En el curso 2010–2011, auxiliar de conversación de español en dos centros de secundaria de Saint-Julien-en-Genevois, en Francia.",
+        ],
       },
       {
         title: "Experiencia jurídica",
-        text: "Secretaria en el *Ministerio Público de Paraguay*, de 2001 a 2008, y asistente jurídica en Asunción; después, en bufetes de Lausana y Aubonne (*CBWM & Associés*, *Dugast Avocat*) y en la *Office d’exécution des peines*, cantón de Vaud.",
+        text: [
+          "Secretaria en el *Ministerio Público de Paraguay* de 2001 a 2008 y, después, asistente jurídica en Asunción.",
+          "En Suiza, asistente jurídica en bufetes de Lausana y Aubonne (*CBWM & Associés*, *Dugast Avocat*) y en la *Office d’exécution des peines* del cantón de Vaud.",
+        ],
       },
       {
         title: "Formación jurídica",
-        text: "Título de abogada por la *Universidad Nacional de Asunción*, Paraguay (2011), y *Diplôme SEC Suisse de secrétaire juridique*, Lausana (2019).",
+        text: [
+          "Título de abogada por la *Universidad Nacional de Asunción*, Paraguay (2011).",
+          "*Diplôme SEC Suisse de secrétaire juridique*, Lausana (2019).",
+        ],
       },
     ],
     cta: "Hablar con Noelia",

@@ -142,7 +142,9 @@ of `Service`, each in the page's language. Pass it only static data from our own
 - The whole Spanish version (2 October 2026) needs a read-through by Noelia, who is a native speaker.
 - Noelia's file (CV, diplomas, employer certificates) holds no interpreting certification, so the site no
   longer says "certifiée"/"certificada": it says Spanish mother tongue, legal training, about ten years in
-  legal settings (7 at the Paraguayan Ministerio Público), interpreting since 2022. Use "juriste de
+  legal settings (7 at the Paraguayan Ministerio Público), interpreting since 2022, and Spanish language
+  assistant in two collèges of Saint-Julien-en-Genevois in 2010–2011 (Académie de Grenoble appointment,
+  1 Oct 2010 to 30 Apr 2011, sent by Noelia). Use "juriste de
   formation", not "avocate", in Swiss-facing copy (protected title). If she does hold a certificate, add its
   name, issuer and year to the Expertise section, `llms.txt` and the Person schema.
 - Not published until confirmed: a possible one-off mission for the UN (entity, year, role and proof
@@ -155,3 +157,13 @@ of `Service`, each in the page's language. Pass it only static data from our own
   "entreprise individuelle non inscrite au registre du commerce". A postal contact address is still
   missing (Swiss LCD art. 3 al. 1 let. s asks for an identity and contact address). "Conditions générales"
   is not linked until a text exists.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
