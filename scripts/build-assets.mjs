@@ -23,7 +23,21 @@ async function write(pipeline, file) {
 }
 
 // Photographs
-await write(sharp(source("noelia-portrait.jpg")).webp({ quality: 86 }), path.join(imagesDir, "noelia-portrait.webp"));
+// Hero portrait: the source is landscape but the hero frame is portrait (413x586), so object-cover
+// would display only a narrow slice of a wide file and the browser, sizing the request for the
+// frame width, would upscale it. Crop to the frame's aspect around the face (horizontally centred).
+{
+  const meta = await sharp(source("noelia-portrait.jpg")).metadata();
+  const cropWidth = Math.min(meta.width, Math.round(meta.height * (413 / 586)));
+  const left = Math.round((meta.width - cropWidth) / 2);
+  await write(
+    sharp(source("noelia-portrait.jpg"))
+      .extract({ left, top: 0, width: cropWidth, height: meta.height })
+      .resize({ width: 1800 })
+      .webp({ quality: 88 }),
+    path.join(imagesDir, "noelia-portrait.webp"),
+  );
+}
 await write(sharp(source("services-hero.png")).webp({ quality: 82 }), path.join(imagesDir, "services-hero.webp"));
 
 // Flat illustrations: lossless keeps the edges crisp and stays small.

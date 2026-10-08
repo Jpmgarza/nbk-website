@@ -42,7 +42,8 @@ export function PageHero({ title, body, cta, image, imageAlt, imageClassName, al
               priority
               quality={90}
               placeholder="blur"
-              sizes="(min-width: 1024px) 413px, 100vw"
+              // The image rests at scale 1.1 (hero parallax, styles/motion.css), so ask for 10% more.
+              sizes="(min-width: 1024px) 455px, 110vw"
               className={cn("object-cover", imageClassName)}
             />
           ) : (
