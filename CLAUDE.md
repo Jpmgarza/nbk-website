@@ -122,8 +122,13 @@ Figma exports live in `design/source/` (not served). `npm run assets` writes Web
 `assets/images/` (imported statically by `next/image`), plus `public/og-share.jpg` and the icons.
 Favicons come from the studio set in `design/source/favicon/` (favicon.ico 16–256, 512, 180 apple, 32) and
 are copied as they are to `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png` and
-`public/icons/icon-512.png`; only `public/icons/icon-192.png` (manifest) is scaled from the 512. The logo exists only as a 713x423 PNG;
-the home portrait is _MG_5033 (photo 19 of the client PDF "Phtographie de noelia.pdf", only 1150x766 there, soft on retina; ask for the full-size export). All PDF photos are in `design/source/photos-noelia/`; the old Figma portrait is kept as `noelia-portrait-figma.png`. Replace the source and rerun the script.
+`public/icons/icon-512.png`; only `public/icons/icon-192.png` (manifest) is scaled from the 512. The logo exists only as a 713x423 PNG. The home hero portrait (`design/source/noelia-portrait.jpg`,
+full-size export received 8 October 2026, 6334x4223) is wired into `components/pages/HomePage.tsx`
+(`imageClassName="object-[50%_20%]"`); `lib/content/*.ts` `hero.imageAlt` holds the alt text. It
+replaced the old 1150x766 placeholder in place (recoverable from git history, commit a325d43, if ever
+needed); the Figma portrait is kept as `noelia-portrait-figma.png`. All PDF photos are in
+`design/source/photos-noelia/`. Replace the source and rerun `npm run assets` for any future portrait
+change.
 
 ## Form
 

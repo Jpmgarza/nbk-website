@@ -119,6 +119,7 @@ export const es: Content = {
     join: "y",
     tail: "francés, para particulares, abogados e instituciones.",
     cta: "Pedir presupuesto",
+    imageAlt: "Retrato de Noelia Krähenbühl, intérprete y traductora",
   },
   servicesHero: {
     title: "Servicios de interpretación y traducción",

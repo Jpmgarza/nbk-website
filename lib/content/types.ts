@@ -81,7 +81,7 @@ export type Content = {
     madeByShort: string;
     rights: string;
   };
-  hero: { title: string; lead: string; join: string; tail: string; cta: string };
+  hero: { title: string; lead: string; join: string; tail: string; cta: string; imageAlt: string };
   servicesHero: { title: string; body: string; cta: string; imageAlt: string };
   expertise: { title: string; intro: string; proofs: { title: string; text: string[] }[]; cta: string };
   problems: {

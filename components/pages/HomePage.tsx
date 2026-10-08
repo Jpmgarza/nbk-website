@@ -1,3 +1,4 @@
+import heroImage from "@/assets/images/noelia-portrait.webp";
 import { Expertise } from "@/components/sections/home/Expertise";
 import { Problems } from "@/components/sections/home/Problems";
 import { Process } from "@/components/sections/home/Process";
@@ -27,6 +28,9 @@ export function HomePage({ locale }: { locale: Locale }) {
           </p>
         }
         cta={{ label: hero.cta, href: PAGES.contact[locale] }}
+        image={heroImage}
+        imageAlt={hero.imageAlt}
+        imageClassName="object-[50%_20%]"
       />
       <Expertise locale={locale} />
       <Problems locale={locale} />
