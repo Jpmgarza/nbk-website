@@ -7,6 +7,11 @@ const scriptSrc =
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Next 16 restricts next/image quality to [75] unless listed here; the hero portrait uses 90
+  // (components/sections/shared/PageHero.tsx) because 75 visibly softened fine detail like hair.
+  images: {
+    qualities: [75, 90],
+  },
   async headers() {
     return [
       {

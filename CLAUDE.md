@@ -129,6 +129,9 @@ replaced the old 1150x766 placeholder in place (recoverable from git history, co
 needed); the Figma portrait is kept as `noelia-portrait-figma.png`. All PDF photos are in
 `design/source/photos-noelia/`. Replace the source and rerun `npm run assets` for any future portrait
 change.
+Hero photos render at `quality={90}` (PageHero). Next 16 silently coerces any quality not in
+`images.qualities` (default `[75]`) to the nearest allowed value, so 90 is listed in `next.config.ts`;
+add any new quality there too or it will quietly fall back to 75.
 
 ## Form
 

@@ -40,6 +40,7 @@ export function PageHero({ title, body, cta, image, imageAlt, imageClassName, al
               alt={imageAlt ?? ""}
               fill
               priority
+              quality={90}
               placeholder="blur"
               sizes="(min-width: 1024px) 413px, 100vw"
               className={cn("object-cover", imageClassName)}
