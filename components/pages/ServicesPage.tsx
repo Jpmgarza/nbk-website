@@ -1,4 +1,4 @@
-import heroImage from "@/assets/images/services-hero.webp";
+import heroImage from "@/assets/images/noelia-services.webp";
 import { ServiceDetail } from "@/components/sections/services/ServiceDetail";
 import { PageHero } from "@/components/sections/shared/PageHero";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -19,7 +19,7 @@ export function ServicesPage({ locale }: { locale: Locale }) {
         cta={{ label: servicesHero.cta, href: PAGES.contact[locale] }}
         image={heroImage}
         imageAlt={servicesHero.imageAlt}
-        imageClassName="object-[70%_50%] lg:object-[82%_50%]"
+        imageClassName="object-[50%_0%]"
       />
       {getServices(locale).map((service) => (
         <ServiceDetail key={service.slug} service={service} locale={locale} />

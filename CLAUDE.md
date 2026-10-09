@@ -175,7 +175,9 @@ of `Service`, each in the page's language. Pass it only static data from our own
 - SEO copy added without the client: "Lausanne" in the service area and home meta description. The
   `/services` H1 is the short "Services d’interprétariat et de traduction" (client choice): the longer
   "…, pensés pour chaque situation" wrapped to six lines and ran under the hero photo.
-- The services hero photo is not Noelia; replace it with a real photo before launch.
+- The services hero reuses the home portrait with a tighter crop (`noelia-services.webp`, built by
+  `npm run assets`); the stock photo is gone. A second real photo of Noelia in a working setting
+  (tall, plain background, no logos) would be better: drop it in `design/source/` and change the crop.
 - Noelia is not entered in the commercial register, so there is no IDE number; the mentions légales say
   "entreprise individuelle non inscrite au registre du commerce". The LCD art. 3 al. 1 let. s contact
   address is her home address (SITE.address in lib/constants.ts, confirmed by her), shown on the

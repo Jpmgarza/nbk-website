@@ -38,7 +38,24 @@ async function write(pipeline, file) {
     path.join(imagesDir, "noelia-portrait.webp"),
   );
 }
-await write(sharp(source("services-hero.png")).webp({ quality: 82 }), path.join(imagesDir, "services-hero.webp"));
+// Services hero: same shoot, tighter crop (face larger, shoulders cut) so the two pages differ.
+{
+  const meta = await sharp(source("noelia-portrait.jpg")).metadata();
+  const cropHeight = Math.round(meta.height * 0.78);
+  const cropWidth = Math.round(cropHeight * (413 / 586));
+  await write(
+    sharp(source("noelia-portrait.jpg"))
+      .extract({
+        left: Math.round((meta.width - cropWidth) / 2),
+        top: Math.round(meta.height * 0.07),
+        width: cropWidth,
+        height: cropHeight,
+      })
+      .resize({ width: 1800 })
+      .webp({ quality: 88 }),
+    path.join(imagesDir, "noelia-services.webp"),
+  );
+}
 
 // Flat illustrations: lossless keeps the edges crisp and stays small.
 for (const name of ["juridique", "communautaire", "simultanee", "chuchotee", "consecutive", "traduction", "faq"]) {

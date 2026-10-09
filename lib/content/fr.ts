@@ -121,7 +121,7 @@ export const fr: Content = {
     title: "Services d’interprétariat et de traduction",
     body: "Chaque situation a ses propres enjeux. Voici les prestations proposées, adaptées à votre contexte : juridique, médical, social ou professionnel.",
     cta: "Recevoir mon devis",
-    imageAlt: "Interprète professionnelle tenant un dossier dans une salle de réunion",
+    imageAlt: "Noelia Krähenbühl, interprète et traductrice juridique",
   },
   expertise: {
     title: "Preuve d’expertise",
