@@ -5,71 +5,71 @@
   <g id="content" stroke-linecap="round" stroke-linejoin="round">
   <g transform="translate(0,92)">
     <!-- Left speech bubble (white) -->
-    <path d="M200,250 h250 a30,30 0 0 1 30,30 v120 a30,30 0 0 1 -30,30 h-190 l-60,54 l10,-54 h-10 a30,30 0 0 1 -30,-30 v-120 a30,30 0 0 1 30,-30 z" fill="#FCFCFC" stroke="#121722" stroke-width="12"/>
-    <line x1="225" y1="305" x2="425" y2="305" stroke="#121722" stroke-width="14"/>
-    <line x1="225" y1="345" x2="395" y2="345" stroke="#121722" stroke-width="14"/>
-    <line x1="225" y1="385" x2="340" y2="385" stroke="#121722" stroke-width="14"/>
+    <path d="M200,250 h250 a30,30 0 0 1 30,30 v120 a30,30 0 0 1 -30,30 h-190 l-60,54 l10,-54 h-10 a30,30 0 0 1 -30,-30 v-120 a30,30 0 0 1 30,-30 z" fill="#FCFCFC" stroke="#1D1D1B" stroke-width="12"/>
+    <line x1="225" y1="305" x2="425" y2="305" stroke="#1D1D1B" stroke-width="14"/>
+    <line x1="225" y1="345" x2="395" y2="345" stroke="#1D1D1B" stroke-width="14"/>
+    <line x1="225" y1="385" x2="340" y2="385" stroke="#1D1D1B" stroke-width="14"/>
     <!-- Right speech bubble (red) -->
-    <path d="M550,320 h250 a30,30 0 0 1 30,30 v120 a30,30 0 0 1 -30,30 h-10 l6,50 l-56,-50 h-190 a30,30 0 0 1 -30,-30 v-120 a30,30 0 0 1 30,-30 z" fill="#9E2230"/>
+    <path d="M550,320 h250 a30,30 0 0 1 30,30 v120 a30,30 0 0 1 -30,30 h-10 l6,50 l-56,-50 h-190 a30,30 0 0 1 -30,-30 v-120 a30,30 0 0 1 30,-30 z" fill="#B01829"/>
     <line x1="575" y1="375" x2="775" y2="375" stroke="#FCFCFC" stroke-width="14"/>
     <line x1="605" y1="415" x2="775" y2="415" stroke="#FCFCFC" stroke-width="14"/>
     <line x1="660" y1="455" x2="775" y2="455" stroke="#FCFCFC" stroke-width="14"/>
     <!-- Translation badge + link to interpreter -->
-    <line x1="500" y1="450.5" x2="500" y2="505" stroke="#121722" stroke-width="8" stroke-dasharray="1 17"/>
-    <circle cx="500" cy="380" r="58" fill="#FCFCFC" stroke="#121722" stroke-width="12"/>
-    <path d="M468,362 h60 m-16,-16 l16,16 l-16,16" fill="none" stroke="#121722" stroke-width="11"/>
-    <path d="M532,398 h-60 m16,-16 l-16,16 l16,16" fill="none" stroke="#9E2230" stroke-width="11"/>
+    <line x1="500" y1="450.5" x2="500" y2="505" stroke="#1D1D1B" stroke-width="8" stroke-dasharray="1 17"/>
+    <circle cx="500" cy="380" r="58" fill="#FCFCFC" stroke="#1D1D1B" stroke-width="12"/>
+    <path d="M468,362 h60 m-16,-16 l16,16 l-16,16" fill="none" stroke="#1D1D1B" stroke-width="11"/>
+    <path d="M532,398 h-60 m16,-16 l-16,16 l16,16" fill="none" stroke="#B01829" stroke-width="11"/>
   </g>
   <g transform="translate(0,154)">
     <!-- Client (left) -->
-    <circle cx="170" cy="537" r="62" fill="#121722"/>
-    <path d="M50,818 v-62 q0,-138 120,-138 q120,0 120,138 v62 z" fill="#121722"/>
+    <circle cx="170" cy="537" r="62" fill="#1D1D1B"/>
+    <path d="M50,818 v-62 q0,-138 120,-138 q120,0 120,138 v62 z" fill="#1D1D1B"/>
     <path d="M149,623 L170,668 L191,623 Z" fill="#FCFCFC"/>
 
     <!-- Interpreter (centre, woman, red V) -->
-    <circle cx="500" cy="479" r="26" fill="#121722"/>
-    <circle cx="500" cy="538" r="58" fill="#121722"/>
-    <path d="M385,818 v-62 q0,-136 115,-136 q115,0 115,136 v62 z" fill="#121722"/>
-    <path d="M477,627 L500,672 L523,627 Z" fill="#9E2230" stroke="#FCFCFC" stroke-width="6"/>
+    <circle cx="500" cy="479" r="26" fill="#1D1D1B"/>
+    <circle cx="500" cy="538" r="58" fill="#1D1D1B"/>
+    <path d="M385,818 v-62 q0,-136 115,-136 q115,0 115,136 v62 z" fill="#1D1D1B"/>
+    <path d="M477,627 L500,672 L523,627 Z" fill="#B01829" stroke="#FCFCFC" stroke-width="6"/>
 
     <!-- Professional (right, black tie) -->
-    <circle cx="830" cy="537" r="62" fill="#121722"/>
-    <path d="M710,818 v-62 q0,-138 120,-138 q120,0 120,138 v62 z" fill="#121722"/>
+    <circle cx="830" cy="537" r="62" fill="#1D1D1B"/>
+    <path d="M710,818 v-62 q0,-138 120,-138 q120,0 120,138 v62 z" fill="#1D1D1B"/>
     <path d="M808,622 L830,676 L852,622 Z" fill="#FCFCFC"/>
-    <path d="M824,662 h12 l5,45 l-11,14 l-11,-14 z" fill="#121722" stroke="#FCFCFC" stroke-width="4"/>
+    <path d="M824,662 h12 l5,45 l-11,14 l-11,-14 z" fill="#1D1D1B" stroke="#FCFCFC" stroke-width="4"/>
   </g>
 
   <!-- Context badges: juridique, médical, social, professionnel -->
   <g id="contexts" stroke-width="8">
     <g transform="translate(215,1092) scale(1.43) translate(-290,-845)">
     <!-- Juridique: scales -->
-    <circle cx="290" cy="845" r="46" fill="#FCFCFC" stroke="#121722"/>
-    <line x1="290" y1="822" x2="290" y2="866" stroke="#121722" stroke-width="6"/>
-    <line x1="266" y1="830" x2="314" y2="830" stroke="#121722" stroke-width="6"/>
-    <path d="M266,830 l-9,20 M266,830 l9,20 M314,830 l-9,20 M314,830 l9,20" fill="none" stroke="#121722" stroke-width="3"/>
-    <path d="M255,850 h22 a11,8 0 0 1 -22,0 z M303,850 h22 a11,8 0 0 1 -22,0 z" fill="#121722" stroke="none"/>
-    <line x1="278" y1="868" x2="302" y2="868" stroke="#121722" stroke-width="6"/>
-    <circle cx="290" cy="821" r="5" fill="#9E2230" stroke="none"/>
+    <circle cx="290" cy="845" r="46" fill="#FCFCFC" stroke="#1D1D1B"/>
+    <line x1="290" y1="822" x2="290" y2="866" stroke="#1D1D1B" stroke-width="6"/>
+    <line x1="266" y1="830" x2="314" y2="830" stroke="#1D1D1B" stroke-width="6"/>
+    <path d="M266,830 l-9,20 M266,830 l9,20 M314,830 l-9,20 M314,830 l9,20" fill="none" stroke="#1D1D1B" stroke-width="3"/>
+    <path d="M255,850 h22 a11,8 0 0 1 -22,0 z M303,850 h22 a11,8 0 0 1 -22,0 z" fill="#1D1D1B" stroke="none"/>
+    <line x1="278" y1="868" x2="302" y2="868" stroke="#1D1D1B" stroke-width="6"/>
+    <circle cx="290" cy="821" r="5" fill="#B01829" stroke="none"/>
 
     </g>
     <g transform="translate(405,1092) scale(1.43) translate(-430,-845)">
     <!-- Médical: cross -->
-    <circle cx="430" cy="845" r="46" fill="#FCFCFC" stroke="#121722"/>
-    <path d="M420,821 h20 v14 h14 v20 h-14 v14 h-20 v-14 h-14 v-20 h14 z" fill="#9E2230" stroke="none"/>
+    <circle cx="430" cy="845" r="46" fill="#FCFCFC" stroke="#1D1D1B"/>
+    <path d="M420,821 h20 v14 h14 v20 h-14 v14 h-20 v-14 h-14 v-20 h14 z" fill="#B01829" stroke="none"/>
 
     </g>
     <g transform="translate(595,1092) scale(1.43) translate(-570,-845)">
     <!-- Social: heart -->
-    <circle cx="570" cy="845" r="46" fill="#FCFCFC" stroke="#121722"/>
-    <path d="M570,870 C546,855 540,840 548,830 C555,822 566,825 570,834 C574,825 585,822 592,830 C600,840 594,855 570,870 Z" fill="#9E2230" stroke="none"/>
+    <circle cx="570" cy="845" r="46" fill="#FCFCFC" stroke="#1D1D1B"/>
+    <path d="M570,870 C546,855 540,840 548,830 C555,822 566,825 570,834 C574,825 585,822 592,830 C600,840 594,855 570,870 Z" fill="#B01829" stroke="none"/>
 
     </g>
     <g transform="translate(785,1092) scale(1.43) translate(-710,-845)">
     <!-- Professionnel: briefcase -->
-    <circle cx="710" cy="845" r="46" fill="#FCFCFC" stroke="#121722"/>
-    <path d="M700,831 v-6 a4,4 0 0 1 4,-4 h12 a4,4 0 0 1 4,4 v6" fill="none" stroke="#121722" stroke-width="5"/>
-    <rect x="684" y="831" width="52" height="36" rx="5" fill="#121722" stroke="none"/>
-    <rect x="704" y="842" width="12" height="9" rx="2" fill="#9E2230" stroke="none"/>
+    <circle cx="710" cy="845" r="46" fill="#FCFCFC" stroke="#1D1D1B"/>
+    <path d="M700,831 v-6 a4,4 0 0 1 4,-4 h12 a4,4 0 0 1 4,4 v6" fill="none" stroke="#1D1D1B" stroke-width="5"/>
+    <rect x="684" y="831" width="52" height="36" rx="5" fill="#1D1D1B" stroke="none"/>
+    <rect x="704" y="842" width="12" height="9" rx="2" fill="#B01829" stroke="none"/>
     </g>
   </g>
   </g>
