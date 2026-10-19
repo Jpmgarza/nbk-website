@@ -23,34 +23,20 @@ async function write(pipeline, file) {
 }
 
 // Photographs
-// Hero portrait: the source is landscape but the hero frame is portrait (413x586), so object-cover
-// would display only a narrow slice of a wide file and the browser, sizing the request for the
-// frame width, would upscale it. Crop to the frame's aspect around the face (horizontally centred).
+// Home hero: the whole landscape shot, uncropped. A portrait crop made her look too close on phones
+// and tablets; PageHero `landscape` gives it a shorter frame on phones and asks next/image for a
+// width that covers the cover-cropped frame, so it is never upscaled.
+await write(
+  sharp(source("noelia-portrait.jpg")).resize({ width: 2400 }).webp({ quality: 88 }),
+  path.join(imagesDir, "noelia-portrait-wide.webp"),
+);
+// Services hero: generated meeting-table image (2048x3072), cropped to the portrait hero frame.
 {
-  const meta = await sharp(source("noelia-portrait.jpg")).metadata();
-  const cropWidth = Math.min(meta.width, Math.round(meta.height * (413 / 586)));
-  const left = Math.round((meta.width - cropWidth) / 2);
+  const meta = await sharp(source("services-hero.jpg")).metadata();
+  const cropHeight = Math.min(meta.height, Math.round(meta.width * (586 / 413)));
   await write(
-    sharp(source("noelia-portrait.jpg"))
-      .extract({ left, top: 0, width: cropWidth, height: meta.height })
-      .resize({ width: 1800 })
-      .webp({ quality: 88 }),
-    path.join(imagesDir, "noelia-portrait.webp"),
-  );
-}
-// Services hero: same shoot, tighter crop (face larger, shoulders cut) so the two pages differ.
-{
-  const meta = await sharp(source("noelia-portrait.jpg")).metadata();
-  const cropHeight = Math.round(meta.height * 0.78);
-  const cropWidth = Math.round(cropHeight * (413 / 586));
-  await write(
-    sharp(source("noelia-portrait.jpg"))
-      .extract({
-        left: Math.round((meta.width - cropWidth) / 2),
-        top: Math.round(meta.height * 0.07),
-        width: cropWidth,
-        height: cropHeight,
-      })
+    sharp(source("services-hero.jpg"))
+      .extract({ left: 0, top: Math.round((meta.height - cropHeight) / 2), width: meta.width, height: cropHeight })
       .resize({ width: 1800 })
       .webp({ quality: 88 }),
     path.join(imagesDir, "noelia-services.webp"),

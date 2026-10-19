@@ -22,6 +22,8 @@ export const SITE = {
     e164: "+41789421267",
   },
   linkedin: "https://www.linkedin.com/in/noelia-kr%C3%A4henb%C3%BChl/",
+  // Google Business Profile, by its permanent place ID (the shared short link stores an old map view).
+  googleMaps: "https://www.google.com/maps?cid=4628189076179302399",
   studio: {
     name: "Studio PWI",
     url: "https://www.studiopwi.com",

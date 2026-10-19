@@ -49,7 +49,7 @@ export function businessSchema(locale: Locale) {
       ],
       sameAs: [SITE.linkedin],
     },
-    sameAs: [SITE.linkedin],
+    sameAs: [SITE.linkedin, SITE.googleMaps],
   };
 }
 

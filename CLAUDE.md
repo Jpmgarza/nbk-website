@@ -123,8 +123,11 @@ Figma exports live in `design/source/` (not served). `npm run assets` writes Web
 Favicons come from the studio set in `design/source/favicon/` (favicon.ico 16–256, 512, 180 apple, 32) and
 are copied as they are to `app/favicon.ico`, `app/icon.png`, `app/apple-icon.png` and
 `public/icons/icon-512.png`; only `public/icons/icon-192.png` (manifest) is scaled from the 512. The logo exists only as a 713x423 PNG. The home hero portrait (`design/source/noelia-portrait.jpg`,
-full-size export received 8 October 2026, 6334x4223) is wired into `components/pages/HomePage.tsx`
-(`imageClassName="object-[50%_20%]"`); `lib/content/*.ts` `hero.imageAlt` holds the alt text. It
+full-size export received 8 October 2026, 6334x4223) is served uncropped as `noelia-portrait-wide.webp`
+and wired into `components/pages/HomePage.tsx` with `PageHero landscape`: a 4:5 frame on phones (a
+square one put the title over her face; the old 510px-tall frame of a portrait crop looked too close,
+client feedback 19 October 2026) and `sizes` for a cover-cropped 3:2 image. `lib/content/*.ts`
+`hero.imageAlt` holds the alt text. It
 replaced the old 1150x766 placeholder in place (recoverable from git history, commit a325d43, if ever
 needed); the Figma portrait is kept as `noelia-portrait-figma.png`. All PDF photos are in
 `design/source/photos-noelia/`. Replace the source and rerun `npm run assets` for any future portrait
@@ -175,9 +178,10 @@ of `Service`, each in the page's language. Pass it only static data from our own
 - SEO copy added without the client: "Lausanne" in the service area and home meta description. The
   `/services` H1 is the short "Services d’interprétariat et de traduction" (client choice): the longer
   "…, pensés pour chaque situation" wrapped to six lines and ran under the hero photo.
-- The services hero reuses the home portrait with a tighter crop (`noelia-services.webp`, built by
-  `npm run assets`); the stock photo is gone. A second real photo of Noelia in a working setting
-  (tall, plain background, no logos) would be better: drop it in `design/source/` and change the crop.
+- The services hero is an AI-generated meeting-table image (`design/source/services-hero.jpg`, 2048x3072,
+  cropped to the portrait frame into `noelia-services.webp` by `npm run assets`; alt text describes the
+  table, not Noelia). A real photo of Noelia in a working setting (tall, plain background, no logos)
+  would be better: replace the source and rerun `npm run assets`.
 - Noelia is not entered in the commercial register, so there is no IDE number; the mentions légales say
   "entreprise individuelle non inscrite au registre du commerce". The LCD art. 3 al. 1 let. s contact
   address is her home address (SITE.address in lib/constants.ts, confirmed by her), shown on the

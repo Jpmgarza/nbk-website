@@ -125,7 +125,7 @@ export const es: Content = {
     title: "Servicios de interpretación y traducción",
     body: "Cada situación tiene sus propias exigencias. Estos son los servicios disponibles, adaptados a su contexto: jurídico, médico, social o profesional.",
     cta: "Pedir presupuesto",
-    imageAlt: "Noelia Krähenbühl, intérprete y traductora jurídica",
+    imageAlt: "Mesa de reunión con un vaso de agua y una libreta",
   },
   expertise: {
     title: "Experiencia y formación",

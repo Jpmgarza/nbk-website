@@ -12,6 +12,8 @@ type Props = {
   image?: StaticImageData;
   imageAlt?: string;
   imageClassName?: string;
+  /** For a landscape photo: shorter frame on phones, and sizes for a cover-cropped wide image. */
+  landscape?: boolean;
   align?: "center" | "start";
   /** "compact" caps the desktop title at 92px, for titles with a long word. */
   titleSize?: "default" | "compact";
@@ -22,7 +24,18 @@ type Props = {
  * Below lg the title sits on the photo (full-bleed, darkened at the bottom); from lg the
  * photo moves to a right-hand column. Both layouts come from the same grid via named areas.
  */
-export function PageHero({ title, body, cta, image, imageAlt, imageClassName, align = "center", titleSize = "default", className }: Props) {
+export function PageHero({
+  title,
+  body,
+  cta,
+  image,
+  imageAlt,
+  imageClassName,
+  landscape = false,
+  align = "center",
+  titleSize = "default",
+  className,
+}: Props) {
   return (
     <section className={cn("lg:container-page lg:pb-24", className)}>
       <div
@@ -33,7 +46,14 @@ export function PageHero({ title, body, cta, image, imageAlt, imageClassName, al
           align === "center" ? "lg:grid-rows-[1fr_auto_auto_auto_1fr]" : "lg:grid-rows-[0_auto_auto_auto_1fr]",
         )}
       >
-        <div className="motion-hero-media relative h-[510px] overflow-hidden rounded [grid-area:media] md:h-[720px] [@media(max-height:500px)_and_(max-width:1023px)]:h-[calc(100svh-100px)] lg:h-auto lg:aspect-[413/586] lg:self-center">
+        <div
+          className={cn(
+            "motion-hero-media relative overflow-hidden rounded [grid-area:media] md:h-[720px] [@media(max-height:500px)_and_(max-width:1023px)]:h-[calc(100svh-100px)] lg:h-auto lg:aspect-[413/586] lg:self-center",
+            landscape
+              ? "aspect-[4/5] md:aspect-auto [@media(max-height:500px)_and_(max-width:1023px)]:aspect-auto"
+              : "h-[510px]",
+          )}
+        >
           {image ? (
             <Image
               src={image}
@@ -43,7 +63,12 @@ export function PageHero({ title, body, cta, image, imageAlt, imageClassName, al
               quality={90}
               placeholder="blur"
               // The image rests at scale 1.1 (hero parallax, styles/motion.css), so ask for 10% more.
-              sizes="(min-width: 1024px) 455px, 110vw"
+              // A 3:2 landscape image is cover-cropped to the frame height: 1.5 x height x 1.1.
+              sizes={
+                landscape
+                  ? "(min-width: 1024px) 970px, (min-width: 768px) 1190px, 210vw"
+                  : "(min-width: 1024px) 455px, 110vw"
+              }
               className={cn("object-cover", imageClassName)}
             />
           ) : (
