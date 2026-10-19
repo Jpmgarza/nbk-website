@@ -182,10 +182,13 @@ of `Service`, each in the page's language. Pass it only static data from our own
 - SEO copy added without the client: "Lausanne" in the service area and home meta description. The
   `/services` H1 is the short "Services d’interprétariat et de traduction" (client choice): the longer
   "…, pensés pour chaque situation" wrapped to six lines and ran under the hero photo.
-- The services hero is an AI-generated meeting-table image (`design/source/services-hero.jpg`, 2048x3072,
-  cropped to the portrait frame into `noelia-services.webp` by `npm run assets`; alt text describes the
-  table, not Noelia). A real photo of Noelia in a working setting (tall, plain background, no logos)
-  would be better: replace the source and rerun `npm run assets`.
+- The services hero is a pictogram illustration (`design/source/services-hero.svg`, 1000x1500: interpreter
+  between two people, plus four context icons: juridique, médical, social, professionnel). It replaced an
+  AI meeting-table photo the client found pointless. `npm run assets` builds `services-hero.webp` and
+  `services-hero-mobile.webp`; the mobile one hides `#contexts` and lifts `#content` because below lg
+  the title is overlaid on the lower part of the frame (the text under the title names the same
+  contexts). `PageHero mobileImage` swaps them at lg with a `<picture>` (`getImageProps`);
+  `imageClassName="object-top"` keeps the bubbles in the wider tablet frame.
 - Noelia is not entered in the commercial register, so there is no IDE number; the mentions légales say
   "entreprise individuelle non inscrite au registre du commerce". The LCD art. 3 al. 1 let. s contact
   address is her home address (SITE.address in lib/constants.ts, confirmed by her), shown on the

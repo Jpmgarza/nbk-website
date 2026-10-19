@@ -1,6 +1,6 @@
 // Builds every image the site serves from the Figma exports in design/source.
 // Run with `npm run assets` after replacing a source file.
-import { copyFile, mkdir } from "node:fs/promises";
+import { copyFile, mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -30,17 +30,28 @@ await write(
   sharp(source("noelia-portrait.jpg")).resize({ width: 2400 }).webp({ quality: 88 }),
   path.join(imagesDir, "noelia-portrait-wide.webp"),
 );
-// Services hero: generated meeting-table image (2048x3072), cropped to the portrait hero frame.
+// Services hero: pictogram illustration (interpreter between two people, four contexts), 1000x1500 SVG
+// rasterised at 1800px wide and cropped to the portrait hero frame (413x586). Below lg the title sits
+// on the lower part of the frame, so the mobile variant drops the context icons (the text under the
+// title names the same contexts) and lifts the drawing.
 {
-  const meta = await sharp(source("services-hero.jpg")).metadata();
-  const cropHeight = Math.min(meta.height, Math.round(meta.width * (586 / 413)));
-  await write(
-    sharp(source("services-hero.jpg"))
-      .extract({ left: 0, top: Math.round((meta.height - cropHeight) / 2), width: meta.width, height: cropHeight })
-      .resize({ width: 1800 })
-      .webp({ quality: 88 }),
-    path.join(imagesDir, "noelia-services.webp"),
-  );
+  const svg = await readFile(source("services-hero.svg"), "utf8");
+  const mobileSvg = svg
+    .replace('<g id="contexts"', '<g id="contexts" display="none"')
+    .replace('<g id="content"', '<g id="content" transform="translate(0,-90)"');
+  for (const [markup, name] of [
+    [svg, "services-hero.webp"],
+    [mobileSvg, "services-hero-mobile.webp"],
+  ]) {
+    const { data, info } = await sharp(Buffer.from(markup), { density: 72 * 1.8 }).png().toBuffer({ resolveWithObject: true });
+    const cropHeight = Math.min(info.height, Math.round(info.width * (586 / 413)));
+    await write(
+      sharp(data)
+        .extract({ left: 0, top: Math.round((info.height - cropHeight) / 2), width: info.width, height: cropHeight })
+        .webp({ quality: 90 }),
+      path.join(imagesDir, name),
+    );
+  }
 }
 
 // Flat illustrations: lossless keeps the edges crisp and stays small.

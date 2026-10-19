@@ -121,7 +121,7 @@ export const fr: Content = {
     title: "Services d’interprétariat et de traduction",
     body: "Chaque situation a ses propres enjeux. Voici les prestations proposées, adaptées à votre contexte : juridique, médical, social ou professionnel.",
     cta: "Recevoir mon devis",
-    imageAlt: "Table de réunion avec un verre d’eau et un carnet",
+    imageAlt: "Illustration : une interprète relie deux personnes qui parlent des langues différentes, en contexte juridique, médical, social ou professionnel",
   },
   expertise: {
     title: "Preuve d’expertise",

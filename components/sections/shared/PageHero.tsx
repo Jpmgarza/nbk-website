@@ -1,4 +1,4 @@
-import Image, { type StaticImageData } from "next/image";
+import Image, { getImageProps, type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/ui/Button";
 import { SectionTitle } from "@/components/ui/SectionTitle";
@@ -10,6 +10,8 @@ type Props = {
   cta: { label: string; href: string };
   /** Omit to render a grey placeholder block instead of a photo. */
   image?: StaticImageData;
+  /** Shown below lg instead of `image` (art direction), e.g. a variant that leaves room for the title. */
+  mobileImage?: StaticImageData;
   imageAlt?: string;
   imageClassName?: string;
   /** For a landscape photo: shorter frame on phones, and sizes for a cover-cropped wide image. */
@@ -29,6 +31,7 @@ export function PageHero({
   body,
   cta,
   image,
+  mobileImage,
   imageAlt,
   imageClassName,
   landscape = false,
@@ -36,6 +39,20 @@ export function PageHero({
   titleSize = "default",
   className,
 }: Props) {
+  const imageProps = {
+    alt: imageAlt ?? "",
+    fill: true,
+    priority: true,
+    quality: 90,
+    placeholder: "blur" as const,
+    // The image rests at scale 1.1 (hero parallax, styles/motion.css), so ask for 10% more.
+    // A 3:2 landscape image is cover-cropped to the frame height: 1.5 x height x 1.1.
+    sizes: landscape
+      ? "(min-width: 1024px) 970px, (min-width: 768px) 1190px, 210vw"
+      : "(min-width: 1024px) 455px, 110vw",
+    className: cn("object-cover", imageClassName),
+  };
+
   return (
     <section className={cn("lg:container-page lg:pb-24", className)}>
       <div
@@ -54,23 +71,10 @@ export function PageHero({
               : "h-[510px]",
           )}
         >
-          {image ? (
-            <Image
-              src={image}
-              alt={imageAlt ?? ""}
-              fill
-              priority
-              quality={90}
-              placeholder="blur"
-              // The image rests at scale 1.1 (hero parallax, styles/motion.css), so ask for 10% more.
-              // A 3:2 landscape image is cover-cropped to the frame height: 1.5 x height x 1.1.
-              sizes={
-                landscape
-                  ? "(min-width: 1024px) 970px, (min-width: 768px) 1190px, 210vw"
-                  : "(min-width: 1024px) 455px, 110vw"
-              }
-              className={cn("object-cover", imageClassName)}
-            />
+          {image && mobileImage ? (
+            <ArtDirectedImage image={image} mobileImage={mobileImage} imageProps={imageProps} />
+          ) : image ? (
+            <Image src={image} {...imageProps} alt={imageProps.alt} />
           ) : (
             <div aria-hidden="true" className="absolute inset-0 bg-[#9ca3af]" />
           )}
@@ -97,5 +101,28 @@ export function PageHero({
         </div>
       </div>
     </section>
+  );
+}
+
+/** A <picture> that swaps to `mobileImage` below lg; the <img> keeps the hero motion selectors. */
+function ArtDirectedImage({
+  image,
+  mobileImage,
+  imageProps,
+}: {
+  image: StaticImageData;
+  mobileImage: StaticImageData;
+  imageProps: Omit<Parameters<typeof getImageProps>[0], "src">;
+}) {
+  const mobileSizes = "110vw";
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...imageProps, src: mobileImage, sizes: mobileSizes });
+  const { props } = getImageProps({ ...imageProps, src: image });
+  return (
+    <picture>
+      <source media="(max-width: 1023px)" srcSet={mobileSrcSet} sizes={mobileSizes} />
+      <img {...props} alt={props.alt} />
+    </picture>
   );
 }
