@@ -50,6 +50,11 @@ for (const name of ["juridique", "communautaire", "simultanee", "chuchotee", "co
     path.join(imagesDir, `illustration-${name}.webp`),
   );
 }
+// 404 illustration: drawn as SVG in the same pictogram style, rasterised at the same 1000px.
+await write(
+  sharp(source("illustration-404.svg")).webp({ lossless: true, effort: 6 }),
+  path.join(imagesDir, "illustration-404.webp"),
+);
 await write(sharp(source("carte-suisse.png")).webp({ quality: 90 }), path.join(imagesDir, "carte-suisse.webp"));
 await write(sharp(source("logo-nbk.png")).webp({ lossless: true }), path.join(imagesDir, "logo-nbk.webp"));
 

@@ -52,6 +52,10 @@ Bilingual, French by default. French: `/`, `/services`, `/contact`, `/mentions-l
   `<html lang>`; both render `components/layout/SiteShell.tsx`. Switching language is a full page load.
 - With two root layouts there is no app-wide 404: `app/(fr)/[...missing]` and `app/(es)/es/[...missing]`
   call `notFound()` so unknown URLs get the 404 of their language (`global-not-found` is still experimental).
+  `components/pages/NotFoundPage.tsx` copies the `ServiceDetail` layout with its own illustration
+  (`design/source/illustration-404.svg`, transparent background like the service PNGs, rasterised by
+  `npm run assets`); it is on screen at load, so it uses the load entrance (`.motion-load-fade` for the
+  illustration, which only fades like the other illustrations).
 - Route files are thin; page bodies are in `components/pages/` and take `locale`.
 - Header shows the other language as "ES"/"FR" (accessible name "Español"/"Français") and links to
   the same page in that language (`alternatePath`).

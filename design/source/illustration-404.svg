@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <g transform="translate(0,-62)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- "404" bubble (white) -->
+    <path d="M200,250 h250 a30,30 0 0 1 30,30 v120 a30,30 0 0 1 -30,30 h-150 l-60,55 l10,-55 h-50 a30,30 0 0 1 -30,-30 v-120 a30,30 0 0 1 30,-30 z" fill="#FEFDFD" stroke="#1D1D1B" stroke-width="12"/>
+    <path d="M246,382 V298 L212,356 H262" fill="none" stroke="#1D1D1B" stroke-width="16"/>
+    <ellipse cx="309" cy="340" rx="23" ry="40" fill="none" stroke="#1D1D1B" stroke-width="16"/>
+    <path d="M390,382 V298 L356,356 H406" fill="none" stroke="#1D1D1B" stroke-width="16"/>
+    <!-- Back-home bubble (red) -->
+    <path d="M550,320 h250 a30,30 0 0 1 30,30 v120 a30,30 0 0 1 -30,30 h-50 l-20,26 l-10,-26 h-170 a30,30 0 0 1 -30,-30 v-120 a30,30 0 0 1 30,-30 z" fill="#B01829"/>
+    <path d="M648,412 L700,368 L752,412" fill="none" stroke="#FEFDFD" stroke-width="14"/>
+    <path d="M664,400 V460 H736 V400" fill="none" stroke="#FEFDFD" stroke-width="14"/>
+    <path d="M690,460 V430 H710 V460" fill="none" stroke="#FEFDFD" stroke-width="10"/>
+    <!-- Search badge -->
+    <circle cx="500" cy="380" r="58" fill="#FEFDFD" stroke="#1D1D1B" stroke-width="12"/>
+    <circle cx="492" cy="372" r="21" fill="none" stroke="#1D1D1B" stroke-width="11"/>
+    <line x1="508" y1="388" x2="526" y2="406" stroke="#B01829" stroke-width="13"/>
+    <!-- Visitor (left) -->
+    <circle cx="220" cy="600" r="62" fill="#1D1D1B"/>
+    <path d="M90,880 v-60 q0,-140 130,-140 q130,0 130,140 v60 z" fill="#1D1D1B"/>
+    <path d="M195,684 l25,55 l25,-55 z" fill="#FEFDFD"/>
+    <!-- Interpreter (right, woman, red V) -->
+    <circle cx="780" cy="531" r="27" fill="#1D1D1B"/>
+    <circle cx="780" cy="600" r="62" fill="#1D1D1B"/>
+    <path d="M650,880 v-60 q0,-140 130,-140 q130,0 130,140 v60 z" fill="#1D1D1B"/>
+    <path d="M757,686 L780,736 L803,686 Z" fill="#B01829" stroke="#FEFDFD" stroke-width="6"/>
+  </g>
+</svg>

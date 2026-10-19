@@ -9,8 +9,8 @@
  *    step      process step: tile pops, text slides in from its side (revealed by ProcessLine)
  *    title     SectionTitle: words rise, red rule draws
  *    clip      image wipes open upwards and settles from a slight zoom
- * 2. Load: hero and contact-page entrance with data-reveal-load / .motion-load-up /
- *    .motion-load-clip (the "clip" reveal, played on load), pure CSS.
+ * 2. Load: hero, contact-page and 404 entrance with data-reveal-load / .motion-load-up /
+ *    .motion-load-clip (the "clip" reveal, played on load) / .motion-load-fade, pure CSS.
  * 3. Scroll-linked: timeline connector and parallax, only where scroll-driven animations exist.
  * Reduced motion: the observer does nothing and sections 2 and 3 are gated by media queries.
  */
@@ -181,6 +181,12 @@
     animation-delay: var(--load-delay, 0ms);
   }
 
+  /* Illustrations only fade (client choice). */
+  .motion-load-fade {
+    animation: fade-in 1s var(--ease-out) both;
+    animation-delay: var(--load-delay, 0ms);
+  }
+
   .motion-load-clip img {
     animation: clip-settle 1.8s var(--ease-out) both;
     animation-delay: var(--load-delay, 0ms);
@@ -273,6 +279,12 @@
 @keyframes rule-draw {
   from {
     transform: scaleX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
 }
 
